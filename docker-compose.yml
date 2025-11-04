@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_whiTee
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: tomcat_whiTee
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+      - JAVA_OPTS=-Djava.awt.headless=true
+
+volumes:
+  db_data:
+

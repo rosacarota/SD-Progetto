@@ -1,5 +1,3 @@
-DROP DATABASE IF EXISTS whiTee;
-CREATE DATABASE whiTee;
 USE whiTee;
 
 DROP TABLE IF EXISTS Maglietta;
@@ -51,7 +49,7 @@ CREATE TABLE Utente (
     CVV VARCHAR(5),
     cap VARCHAR(5),
     via VARCHAR(70),
-    citta VARCHAR(30),
+    citta VARCHAR(50),
     tipo VARCHAR(30) NOT NULL
 );
 

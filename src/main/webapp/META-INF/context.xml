@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource name="jdbc/whiTee"
+    auth="Container"
+    driverClassName="com.mysql.cj.jdbc.Driver"
+    type="javax.sql.DataSource"
+    username="${DB_USER}"
+    password="${DB_PASS}"
+    url="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&amp;serverTimezone=UTC"/>
+</Context>
+

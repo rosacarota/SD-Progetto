@@ -2,6 +2,9 @@
 target/
 build/
 
+# === Environment files ===
+.env
+
 # === IDE files ===
 .idea/
 .vscode/
@@ -31,5 +34,3 @@ Thumbs.db
 *.jar
 *.zip
 
-# === META-INF sensitive files ===
-src/main/webapp/META-INF/context.xml
