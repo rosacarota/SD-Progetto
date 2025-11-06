@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Template for Tomcat JDBC DataSource configuration.
+
+  Notes from the migration:
+  - `allowPublicKeyRetrieval=true` is required for MySQL 8+ when using Docker.
+  - Environment variables in context.xml are not automatically expanded by Tomcat.
+-->
+<Context>
+  <Resource name="jdbc/whiTee"
+    auth="Container"
+    driverClassName="com.mysql.cj.jdbc.Driver"
+    type="javax.sql.DataSource"
+    username="YOUR_DB_USER"
+    password="YOUR_DB_PASS"
+    url="jdbc:mysql://YOUR_DB_HOST:3306/YOUR_DB_NAME?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+</Context>
+

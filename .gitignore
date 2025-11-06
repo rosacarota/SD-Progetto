@@ -2,6 +2,9 @@
 target/
 build/
 
+# === Configuration files ===
+src/main/webapp/META-INF/context.xml
+
 # === Environment files ===
 .env
 
