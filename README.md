@@ -1,2 +1,2 @@
-# TSW-Progetto
-Progetto per l'esame di *Tecnologie Software per il Web*
+# SD-Progetto
+Progetto per l'esame di *Software Dependability*
