@@ -11,10 +11,15 @@ import java.util.List;
 
 public class CarrelloModel {
     private ArrayList<MagliettaOrdine> carrello;
-    private MagliettaDAO magliettaDAO = new MagliettaDAO();
+    private MagliettaDAO magliettaDAO;
 
     public CarrelloModel() {
-        carrello = new ArrayList<>();
+        this(new MagliettaDAO());
+    }
+
+    public CarrelloModel(MagliettaDAO dao) {
+        this.carrello = new ArrayList<>();
+        this.magliettaDAO = dao;
     }
 
     public List<MagliettaOrdine> getCarrello() {

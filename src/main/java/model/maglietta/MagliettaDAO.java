@@ -8,8 +8,12 @@ import java.util.*;
 
 public class MagliettaDAO implements DAOInterface<MagliettaBean, Integer> {
     private static final String TABLE_NAME = "Maglietta";
-    private static final DataSource ds = DBConnection.getDataSource();
+    private DataSource ds;
     private static final List<String> ORDERS = new ArrayList<>(Arrays.asList("nome", "prezzo", "colore", "tipo"));
+
+    public MagliettaDAO() {
+        this.ds = DBConnection.getDataSource();
+    }
 
     public synchronized Collection<MagliettaBean> doRetrieveByTipo(String tipo) throws SQLException {
         Collection<MagliettaBean> maglietteTipo = new ArrayList<>();
