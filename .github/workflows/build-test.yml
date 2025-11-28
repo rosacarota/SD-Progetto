@@ -11,6 +11,7 @@ permissions:
   pull-requests: write   # needed for PR comments (Codecov/Test Reporter)
   checks: write          # needed to publish test results in GitHub Checks
   pages: write           # needed if you publish Jacoco/Pitest reports to GitHub Pages
+  id-token: write        # needed by deploy-pages
 
 jobs:
   build-test:
