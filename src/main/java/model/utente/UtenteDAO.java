@@ -16,8 +16,12 @@ import java.util.Collection;
 public class UtenteDAO implements DAOInterface<UtenteBean, String> {
 
     private static final String TABLE_NAME = "Utente";
-    private static final DataSource ds = DBConnection.getDataSource();
     private static final SecretKey KEY = CryptoKeyProvider.getKey();
+    private static DataSource ds;
+
+    public UtenteDAO() {
+        ds = DBConnection.getDataSource();
+    }
 
     @Override
     public UtenteBean doRetrieveByKey(String code) throws SQLException {

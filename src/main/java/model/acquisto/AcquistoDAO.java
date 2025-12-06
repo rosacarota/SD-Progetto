@@ -12,7 +12,11 @@ import java.util.Collection;
 
 public class AcquistoDAO implements DAOInterface<AcquistoBean, Integer> {
     private static final String TABLE_NAME = "Acquisto";
-    private static final DataSource ds = DBConnection.getDataSource();
+    private static DataSource ds;
+
+    public AcquistoDAO() {
+        ds = DBConnection.getDataSource();
+    }
 
     @Override
     public AcquistoBean doRetrieveByKey(Integer code) throws SQLException {

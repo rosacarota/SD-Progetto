@@ -18,7 +18,11 @@ import model.DBConnection;
 @WebServlet("/SearchBar")
 public class SearchBar extends HttpServlet {
     private static final String TABLE_NAME = "Maglietta";
-    private static final DataSource ds = DBConnection.getDataSource();
+    private static DataSource ds;
+
+    public SearchBar() {
+        ds = DBConnection.getDataSource();
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -12,8 +12,12 @@ import java.util.List;
 
 public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
     private static final String TABLE_NAME = "Ordine";
-    private static final DataSource ds = DBConnection.getDataSource();
     private static final List<String> ORDERS = new ArrayList<>(Arrays.asList("username", "dataOrdine"));
+    private static DataSource ds;
+
+    public OrdineDAO() {
+        ds = DBConnection.getDataSource();
+    }
 
     @Override
     public OrdineBean doRetrieveByKey(Integer code) throws SQLException {

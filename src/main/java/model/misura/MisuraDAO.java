@@ -12,7 +12,11 @@ import java.util.Collection;
 
 public class MisuraDAO {
     private static final String TABLE_NAME = "Misura";
-    private static final DataSource ds = DBConnection.getDataSource();
+    private static DataSource ds;
+
+    public MisuraDAO() {
+        ds = DBConnection.getDataSource();
+    }
 
     public void doSave(MisuraBean product) throws SQLException {
         String query = "INSERT INTO " + TABLE_NAME + " (IDMaglietta, taglia, quantita)" + " VALUES (?, ?, ?)";
