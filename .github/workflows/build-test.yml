@@ -35,8 +35,9 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
-    - name: Run tests
-      run: mvn clean test
+
+    - name: Run tests + coverage gate
+      run: mvn clean verify
 
     # - name: Generate JaCoCo report
     #   run: mvn jacoco:report
