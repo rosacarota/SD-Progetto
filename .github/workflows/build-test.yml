@@ -39,8 +39,8 @@ jobs:
     - name: Run tests + coverage gate
       run: mvn clean verify
 
-    # - name: Generate JaCoCo report
-    #   run: mvn jacoco:report
+    - name: Generate JaCoCo report
+      run: mvn jacoco:report
       
     - name: Generate test report
       uses: dorny/test-reporter@v2
@@ -68,32 +68,32 @@ jobs:
     #     token: ${{ secrets.CODECOV_TOKEN }}
     #     file: ./target/surefire-reports/TEST-*.xml
     #
-    # - name: Run PiTest mutation testing
-    #   run: mvn org.pitest:pitest-maven:mutationCoverage
-    #   continue-on-error: true
+    - name: Run PiTest mutation testing
+      run: mvn org.pitest:pitest-maven:mutationCoverage
+      continue-on-error: true
 
-    # - name: Prepare reports for GitHub Pages
-    # if: github.ref == 'refs/heads/main' && always()
-    # run: |
-    #   mkdir -p github-pages/PiTest
-    #   mkdir -p github-pages/Jacoco
-    #   if [ -d "target/pit-reports" ]; then
-    #     cp -r target/pit-reports/* github-pages/PiTest/ || echo "No PiTest reports found"
-    #   fi
-    #   if [ -d "target/site/jacoco" ]; then
-    #     cp -r target/site/jacoco/* github-pages/Jacoco/ || echo "No JaCoCo reports found"
-    #   fi
+    - name: Prepare reports for GitHub Pages
+      if: github.ref == 'refs/heads/main' && always()
+      run: |
+        mkdir -p github-pages/PiTest
+        mkdir -p github-pages/Jacoco
+        if [ -d "target/pit-reports" ]; then
+          cp -r target/pit-reports/* github-pages/PiTest/ || echo "No PiTest reports found"
+        fi
+        if [ -d "target/site/jacoco" ]; then
+          cp -r target/site/jacoco/* github-pages/Jacoco/ || echo "No JaCoCo reports found"
+        fi
 
-    # - name: Deploy reports to GitHub Pages
-    #   uses: actions/upload-pages-artifact@v3
-    #   if: github.ref == 'refs/heads/main' && always()
-    #   with:
-    #     path: ./github-pages
+    - name: Deploy reports to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      if: github.ref == 'refs/heads/main' && always()
+      with:
+        path: ./github-pages
 
-    # - name: Deploy to GitHub Pages
-    #   uses: actions/deploy-pages@v4
-    #   if: github.ref == 'refs/heads/main' && always()
-    #   id: deployment
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+      if: github.ref == 'refs/heads/main' && always()
+      id: deployment
 
     - name: Build application
       run: mvn package -DskipTests
