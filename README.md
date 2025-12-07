@@ -66,7 +66,7 @@ PiTest produces reports under `target/pit-reports`.
 
 ---
 
-### 🚀 **JMH**
+### 🚀 **JMH - Microbenchmarks**
 
 JMH (Java Microbenchmark Harness) is used to analyze **micro-level performance characteristics** of isolated backend components.
 It is appropriate for benchmarking:
@@ -137,6 +137,8 @@ To ensure actual test effectiveness, PiTest enforces:
 * 80% minimum mutation coverage
 
 The build fails if too many mutants survive or if insufficient mutated lines are exercised, ensuring that the test suite is capable of revealing faulty behavior.
+
+Note that we excluded the same classes as we did with JaCoCo.
 
 ---
 
