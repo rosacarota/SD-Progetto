@@ -51,23 +51,23 @@ jobs:
         reporter: java-junit
         fail-on-error: false
 
-    # - name: Upload coverage to Codecov
-    #   uses: codecov/codecov-action@v4
-    #   if: success() || failure()
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     file: ./target/site/jacoco/jacoco.xml
-    #     flags: unittests
-    #     name: codecov-umbrella
-    #     fail_ci_if_error: false
-    #
-    # - name: Upload test results to Codecov
-    #   if: ${{ !cancelled() }}
-    #   uses: codecov/test-results-action@v1
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     file: ./target/surefire-reports/TEST-*.xml
-    #
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      if: success() || failure()
+      with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+         file: ./target/site/jacoco/jacoco.xml
+         flags: unittests
+         name: codecov-umbrella
+         fail_ci_if_error: false
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+         file: ./target/surefire-reports/TEST-*.xml
+
     - name: Run PiTest mutation testing
       run: mvn org.pitest:pitest-maven:mutationCoverage
       continue-on-error: true
