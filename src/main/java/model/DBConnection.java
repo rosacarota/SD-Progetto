@@ -6,7 +6,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DBConnection {
-  private static DataSource dataSource;
+  private static volatile DataSource dataSource;
 
   private DBConnection() {}
 
