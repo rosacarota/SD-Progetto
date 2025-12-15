@@ -35,7 +35,14 @@
 	</tr>
 	<tr>
 		<td class="Prodotto">
-			<div class="img-zoom-container" onclick="Modal();">
+			<div class="img-zoom-container"
+				role="button"
+				tabindex="0"
+				aria-label="Apri immagine ingrandita"
+				aria-haspopup="dialog"
+				aria-controls="myModal"
+				onclick="Modal();"
+				onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); Modal(); }">
 				<img id="myimage" src="<%= magliettaBean.getGrafica() %>" alt="<%= magliettaBean.getNome() %>" class="mgt">
 			  	<div id="myresult" class="img-zoom-result"></div><br><br><br><br>
 			  	<div id="myModal" class="modal">
