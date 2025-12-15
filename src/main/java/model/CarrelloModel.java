@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CarrelloModel implements Serializable {
     private static final long serialVersionUID = 1L;
-    private ArrayList<MagliettaOrdine> carrello;
+    private transient ArrayList<MagliettaOrdine> carrello;
     private final transient MagliettaDAO magliettaDAO;
 
     public CarrelloModel() {

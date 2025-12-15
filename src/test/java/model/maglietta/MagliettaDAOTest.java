@@ -345,6 +345,7 @@ public class MagliettaDAOTest {
         when(rsMock.getInt("AUTO_INCREMENT")).thenReturn(42);
 
         assertEquals(42, dao.getMaxID());
+        verify(psMock).setString(1, "Maglietta");
     }
 
     // {db_exception}

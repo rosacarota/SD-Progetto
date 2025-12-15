@@ -63,33 +63,22 @@ public class MisuraDAO {
     }
 
     public Collection<MisuraBean> doRetrieveAll(int IDMaglietta) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
         Collection<MisuraBean> misure = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE IDMaglietta = ?";
 
-        try {
-            connection = ds.getConnection();
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, IDMaglietta);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                MisuraBean misuraBean = new MisuraBean();
-
-                setMisura(resultSet, misuraBean);
-
-                misure.add(misuraBean);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    MisuraBean misuraBean = new MisuraBean();
+                    setMisura(resultSet, misuraBean);
+                    misure.add(misuraBean);
+                }
             }
-
-        } finally {
-            if (preparedStatement!= null)
-                preparedStatement.close();
-            if (connection != null)
-                connection.close();
         }
 
         return misure;

@@ -35,6 +35,7 @@ public class OrdineDAOTest {
         when(connMock.prepareStatement(anyString())).thenReturn(psMock);
         when(connMock.createStatement()).thenReturn(stmtMock);
         when(psMock.executeQuery()).thenReturn(rsMock);
+        when(stmtMock.execute(anyString())).thenReturn(true);
     }
 
     // -------- Test doRetrieveByKey() --------
@@ -43,6 +44,8 @@ public class OrdineDAOTest {
     @Test
     void doRetrieveByKey_idValido() throws Exception {
         LocalDate today = LocalDate.now();
+
+        when(rsMock.next()).thenReturn(true);
 
         when(rsMock.getInt("ID")).thenReturn(1);
         when(rsMock.getString("username")).thenReturn("mango");
@@ -56,7 +59,9 @@ public class OrdineDAOTest {
         when(rsMock.getString("citta")).thenReturn("Casotto");
 
         OrdineBean o = dao.doRetrieveByKey(1);
+        verify(psMock).setInt(1, 1);
 
+        assertNotNull(o);
         assertEquals(1, o.getID());
         assertEquals("mango", o.getUsername());
         assertEquals(100f, o.getPrezzoTotale());
@@ -67,6 +72,16 @@ public class OrdineDAOTest {
         assertEquals("80000", o.getCap());
         assertEquals("Via Mango", o.getVia());
         assertEquals("Casotto", o.getCitta());
+    }
+
+    // {id_valido, rs_vuoto, db_ok}
+    @Test
+    void doRetrieveByKey_rsVuoto() throws Exception {
+        when(rsMock.next()).thenReturn(false);
+
+        OrdineBean o = dao.doRetrieveByKey(1);
+
+        assertNull(o);
     }
 
     // {db_exception}
@@ -90,7 +105,7 @@ public class OrdineDAOTest {
         assertTrue(res.isEmpty());
     }
 
-    // {username_valido, una_riga, db_ok}
+    // {username_valido, rs_una_riga, db_ok}
     @Test
     void doRetrieveByUsername_unaRiga() throws Exception {
         LocalDate today = LocalDate.now();
@@ -127,7 +142,7 @@ public class OrdineDAOTest {
 
     // -------- Test doRetriveAll() --------
 
-    // {order_valido, piu_righe, db_ok}
+    // {order_valido, rs_piu_righe, db_ok}
     @Test
     void doRetrieveAll_orderValido() throws Exception {
         LocalDate today = LocalDate.now();
@@ -158,19 +173,15 @@ public class OrdineDAOTest {
         assertEquals(today, o.getDataOrdine());
 
         verify(connMock).prepareStatement(contains("ORDER BY username"));
-        verify(psMock).close();
-        verify(connMock).close();
     }
 
     // {order_valido, prepareStatement_exception}
     @Test
     void doRetrieveAll_prepareStatementException() throws Exception {
-        when(dsMock.getConnection()).thenReturn(connMock);
-        when(connMock.prepareStatement(anyString())).thenThrow(new SQLException());
+        when(connMock.prepareStatement(anyString()))
+                .thenThrow(new SQLException());
 
         assertThrows(SQLException.class, () -> dao.doRetriveAll("username"));
-
-        verify(connMock).close();
     }
 
     // {order_valido, getConnection_exception}
@@ -189,8 +200,7 @@ public class OrdineDAOTest {
         Collection<OrdineBean> res = dao.doRetriveAll("nonValido");
 
         assertTrue(res.isEmpty());
-        verify(psMock).close();
-        verify(connMock).close();
+        verify(connMock).prepareStatement(eq("SELECT * FROM Ordine"));
     }
 
     // -------- Test doSave() --------
@@ -223,12 +233,29 @@ public class OrdineDAOTest {
 
     // -------- Test getMaxID() --------
 
-    // {db_ok}
+    // {db_ok, rs_con_riga}
     @Test
     void getMaxID_ok() throws Exception {
         when(rsMock.next()).thenReturn(true);
         when(rsMock.getInt("AUTO_INCREMENT")).thenReturn(8);
 
         assertEquals(8, dao.getMaxID());
+        verify(psMock).setString(1, "Ordine");
+    }
+
+    // {db_ok, rs_vuoto}
+    @Test
+    void getMaxID_rsVuoto() throws Exception {
+        when(rsMock.next()).thenReturn(false);
+
+        assertThrows(SQLException.class, () -> dao.getMaxID());
+    }
+
+    // {db_exception}
+    @Test
+    void getMaxID_dbException() throws Exception {
+        when(dsMock.getConnection()).thenThrow(new SQLException());
+
+        assertThrows(SQLException.class, () -> dao.getMaxID());
     }
 }

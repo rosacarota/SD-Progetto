@@ -2,6 +2,7 @@ package model.ordine;
 
 import model.DAOInterface;
 import model.DBConnection;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,7 +13,8 @@ import java.util.List;
 
 public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
     private static final String TABLE_NAME = "Ordine";
-    private static final List<String> ORDERS = new ArrayList<>(Arrays.asList("username", "dataOrdine"));
+    private static final List<String> ORDERS =
+            new ArrayList<>(Arrays.asList("username", "dataOrdine"));
     private static DataSource ds;
 
     public OrdineDAO() {
@@ -25,28 +27,64 @@ public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
 
     @Override
     public OrdineBean doRetrieveByKey(Integer code) throws SQLException {
-        OrdineBean ordineBean = new OrdineBean();
-
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE ID = ?";
 
-        try(Connection connection = ds.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-          setOrders(resultSet,ordineBean);
+            preparedStatement.setInt(1, code);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                OrdineBean ordineBean = null;
+
+                if (resultSet.next()) {
+                    ordineBean = new OrdineBean();
+                    setOrders(resultSet, ordineBean);
+                }
+
+                return ordineBean;
+            }
         }
-
-        return ordineBean;
     }
 
     public Collection<OrdineBean> doRetrieveByKey(String code) throws SQLException {
         Collection<OrdineBean> ordini = new ArrayList<>();
-
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE username = ?";
 
-        try (Connection connection = ds.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, code);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    OrdineBean ordineBean = new OrdineBean();
+                    setOrders(resultSet, ordineBean);
+                    ordini.add(ordineBean);
+                }
+            }
+        }
+
+        return ordini;
+    }
+
+    @Override
+    public Collection<OrdineBean> doRetriveAll(String order) throws SQLException {
+        Collection<OrdineBean> ordini = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM " + TABLE_NAME);
+
+        for (String s : ORDERS) {
+            if (s.equals(order)) {
+                query.append(" ORDER BY ").append(s);
+                break;
+            }
+        }
+
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 OrdineBean ordineBean = new OrdineBean();
@@ -59,57 +97,22 @@ public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
     }
 
     @Override
-    public Collection<OrdineBean> doRetriveAll(String order) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        Collection<OrdineBean> ordini = new ArrayList<>();
-
-        StringBuilder query = new StringBuilder("SELECT * FROM " + TABLE_NAME);
-
-        try {
-            connection = ds.getConnection();
-
-            for (String s: ORDERS)
-                if (s.equals(order))
-                    query.append(" ORDER BY ").append(s);
-
-            preparedStatement = connection.prepareStatement(query.toString());
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                OrdineBean ordineBean = new OrdineBean();
-
-                setOrders(resultSet,ordineBean);
-
-                ordini.add(ordineBean);
-            }
-
-        } finally {
-            if (preparedStatement!= null)
-                preparedStatement.close();
-            if (connection != null)
-                connection.close();
-        }
-
-        return ordini;
-    }
-
-    @Override
     public void doSave(OrdineBean ordineBean) throws SQLException {
-        String query = "INSERT INTO " + TABLE_NAME + " (username, prezzoTotale, dataConsegna, dataOrdine, nomeConsegna, cognomeConsegna, cap, via, citta) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query =
+                "INSERT INTO " + TABLE_NAME +
+                " (username, prezzoTotale, dataConsegna, dataOrdine, nomeConsegna, cognomeConsegna, cap, via, citta) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = ds.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = ds.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             setOrdineStatement(ordineBean, preparedStatement);
-
             preparedStatement.executeUpdate();
         }
     }
 
     @Override
     public void doUpdate(OrdineBean product) {
-
     }
 
     @Override
@@ -119,21 +122,26 @@ public class OrdineDAO implements DAOInterface<OrdineBean, Integer> {
 
     public int getMaxID() throws SQLException {
         String sessionCacheQuery = "SET @@SESSION.information_schema_stats_expiry = 0;";
-        String query = "SELECT AUTO_INCREMENT " +
-                "FROM information_schema.tables WHERE table_name = '" + TABLE_NAME +
-                "' AND table_schema = 'whiTee'";
+        String query =
+                "SELECT AUTO_INCREMENT FROM information_schema.tables " +
+                "WHERE table_name = ? AND table_schema = 'whiTee'";
 
-        int ID;
+        try (Connection connection = ds.getConnection();
+             Statement cacheStmt = connection.createStatement();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-        try (Connection connection = ds.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            connection.createStatement().execute(sessionCacheQuery);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            cacheStmt.execute(sessionCacheQuery);
+            preparedStatement.setString(1, TABLE_NAME);
 
-            ID = resultSet.getInt("AUTO_INCREMENT");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                if (!resultSet.next()) {
+                    throw new SQLException("AUTO_INCREMENT non trovato per tabella: " + TABLE_NAME);
+                }
+
+                return resultSet.getInt("AUTO_INCREMENT");
+            }
         }
-
-        return ID;
     }
 
     private void setOrders(ResultSet resultSet, OrdineBean ordineBean) throws SQLException {
