@@ -3,10 +3,10 @@ package model.ordine;
 import java.time.LocalDate;
 
 public class OrdineBean {
-    String username, cap, via, citta, nomeConsegna, cognomeConsegna;
-    int ID;
-    LocalDate dataConsegna, dataOrdine;
-    float prezzoTotale;
+    private String username, cap, via, citta, nomeConsegna, cognomeConsegna;
+    private int ID;
+    private LocalDate dataConsegna, dataOrdine;
+    private float prezzoTotale;
 
     public int getID() {
         return ID;

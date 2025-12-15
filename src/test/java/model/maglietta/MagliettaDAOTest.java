@@ -338,7 +338,7 @@ public class MagliettaDAOTest {
 
     // -------- Test getMaxID() --------
 
-    // {db_ok}
+    // {db_ok, rs_con_riga}
     @Test
     void getMaxID_ok() throws Exception {
         when(rsMock.next()).thenReturn(true);
@@ -351,6 +351,14 @@ public class MagliettaDAOTest {
     @Test
     void getMaxID_dbException() throws Exception {
         when(dsMock.getConnection()).thenThrow(new SQLException());
+
+        assertThrows(SQLException.class, () -> dao.getMaxID());
+    }
+
+    // {db_ok, rs_vuoto}
+    @Test
+    void getMaxID_rsVuoto() throws Exception {
+        when(rsMock.next()).thenReturn(false);
 
         assertThrows(SQLException.class, () -> dao.getMaxID());
     }

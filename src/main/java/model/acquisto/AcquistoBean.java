@@ -1,10 +1,10 @@
 package model.acquisto;
 
 public class AcquistoBean {
-    int IDAcquisto, IDOrdine, IDMaglietta, quantita;
-    String immagine, taglia;
-    float prezzoAq;
-    int ivaAq;
+    private int IDAcquisto, IDOrdine, IDMaglietta, quantita;
+    private String immagine, taglia;
+    private float prezzoAq;
+    private int ivaAq;
 
     public int getIDAcquisto() {
         return IDAcquisto;

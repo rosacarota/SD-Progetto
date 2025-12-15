@@ -5,13 +5,15 @@ import model.maglietta.MagliettaBean;
 import model.maglietta.MagliettaDAO;
 import model.maglietta.MagliettaOrdine;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarrelloModel {
+public class CarrelloModel implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<MagliettaOrdine> carrello;
-    private MagliettaDAO magliettaDAO;
+    private final transient MagliettaDAO magliettaDAO;
 
     public CarrelloModel() {
         this(new MagliettaDAO());
@@ -66,9 +68,5 @@ public class CarrelloModel {
 
     public void setCarrello(ArrayList<MagliettaOrdine> carrello) {
         this.carrello = carrello;
-    }
-
-    public void setMagliettaDAO(MagliettaDAO magliettaDAO) {
-        this.magliettaDAO = magliettaDAO;
     }
 }

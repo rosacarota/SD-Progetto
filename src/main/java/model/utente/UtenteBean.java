@@ -1,8 +1,10 @@
 package model.utente;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class UtenteBean {
+public class UtenteBean implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String username, pwd, nome, cognome, email, nomeCarta, cognomeCarta, numCarta, cap, via, citta, tipo, CVV;
     private LocalDate dataNascita, dataScadenza;
 

@@ -6,25 +6,25 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DBConnection {
-  private static volatile DataSource dataSource;
 
-  private DBConnection() {}
+    private static DataSource dataSource;
 
-  public static DataSource getDataSource() {
-    if (dataSource == null) {
-      synchronized (DBConnection.class) {
+    private DBConnection() {}
+
+    public static synchronized DataSource getDataSource() {
         if (dataSource == null) {
-          try {
+            dataSource = initDataSource();
+        }
+        return dataSource;
+    }
+
+    private static DataSource initDataSource() {
+        try {
             Context init = new InitialContext();
             Context env = (Context) init.lookup("java:comp/env");
-            dataSource = (DataSource) env.lookup("jdbc/whiTee");
-          } catch (NamingException e) {
+            return (DataSource) env.lookup("jdbc/whiTee");
+        } catch (NamingException e) {
             throw new RuntimeException("Cannot initialize DataSource", e);
-          }
         }
-      }
     }
-    return dataSource;
-  }
 }
-
