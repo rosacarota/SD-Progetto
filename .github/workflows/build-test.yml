@@ -156,4 +156,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -B sonar:sonar \
-            -Dsonar.login=${SONAR_TOKEN}
+            -Dsonar.login=${SONAR_TOKEN} \
+            -Dsonar.projectKey=rosacarota_SD-Progetto \
+            -Dsonar.organization=rosa-carotenuto \
+            -Dsonar.qualitygate.wait=true
