@@ -16,8 +16,22 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>rosa-carotenuto</sonar.organization>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <!-- Same exclusions as JaCoCo -->
+        <sonar.coverage.exclusions>
+            src/main/java/model/populator/**,
+            src/main/java/exception/GenericError.java,
+            src/main/java/model/DBConnection.java,
+            src/main/java/model/security/CryptoKeyProvider.java,
+            src/main/java/model/acquisto/AcquistoBean.java,
+            src/main/java/model/maglietta/MagliettaBean.java,
+            src/main/java/model/misura/MisuraBean.java,
+            src/main/java/model/ordine/OrdineBean.java,
+            src/main/java/model/utente/UtenteBean.java,
+            src/main/webapp/**
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencies>
@@ -131,6 +145,11 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
