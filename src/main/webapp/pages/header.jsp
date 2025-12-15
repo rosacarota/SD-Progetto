@@ -80,11 +80,13 @@
 		<div id="mySidenav" class="sidenav">
 			<a href="#"
 				class="closebtn"
-				role="button"
+				role="link"
+				aria-label="Chiudi menu"
 				onclick="event.preventDefault(); closeNav();"
-				aria-label="Chiudi menu">
+				onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); closeNav(); }">
 				&times;
 			</a>
+
 			<a href="${pageContext.request.contextPath}/Catalogo">Catalogo</a>
 			<a href="${pageContext.request.contextPath}/pages/personalizzata.jsp">Personalizza</a>
 		</div>
