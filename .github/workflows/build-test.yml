@@ -74,7 +74,6 @@ jobs:
       if: ${{ !cancelled() }}
       uses: codecov/test-results-action@v1
       with:
-         token: ${{ secrets.CODECOV_TOKEN }}
          file: ./target/surefire-reports/TEST-*.xml
 
     - name: Run PiTest mutation testing
