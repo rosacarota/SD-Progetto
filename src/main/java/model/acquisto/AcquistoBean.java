@@ -1,32 +1,26 @@
 package model.acquisto;
 
 public class AcquistoBean {
+    // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
+    // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
+    private /*@ spec_public @*/ int IDAcquisto;
+    private /*@ spec_public @*/ int IDOrdine;
+    private /*@ spec_public @*/ int IDMaglietta;
+    private /*@ spec_public @*/ int quantita;
 
-    // =========================================================
-    // CLASS INVARIANTS
-    // =========================================================
-    //@ public invariant IDAcquisto  >= 0;
-    //@ public invariant IDOrdine    >= 0;
-    //@ public invariant IDMaglietta >= 0;
-    //@ public invariant quantita    >= 0;
-    //@ public invariant prezzoAq    >= 0.0f;
-    //@ public invariant ivaAq       >= 0;
-
-    // =========================================================
-    // FIELDS
-    // spec_public: allows referencing private fields in JML specs.
-    // nullable: in JML, references are non-null by default, but Java reference fields
-    // are initialized to null unless explicitly set.
-    // =========================================================
-    private /*@ spec_public @*/ int IDAcquisto, IDOrdine, IDMaglietta, quantita;
     private /*@ spec_public @*/ float prezzoAq;
     private /*@ spec_public @*/ int ivaAq;
 
-    private /*@ spec_public @*/ /*@ nullable @*/ String immagine, taglia;
+    private /*@ spec_public nullable @*/ String immagine;
+    private /*@ spec_public nullable @*/ String taglia;
 
-    // =========================================================
-    // GETTERS (pure + assignable \nothing)
-    // =========================================================
+    /*@ public invariant IDAcquisto  >= 0;
+      @ public invariant IDOrdine    >= 0;
+      @ public invariant IDMaglietta >= 0;
+      @ public invariant quantita    >= 0;
+      @ public invariant prezzoAq    >= 0.0f;
+      @ public invariant ivaAq       >= 0;
+      @*/
 
     /*@ public normal_behavior
       @ ensures \result == IDAcquisto;
@@ -35,6 +29,15 @@ public class AcquistoBean {
       @*/
     public int getIDAcquisto() {
         return IDAcquisto;
+    }
+
+    /*@ public normal_behavior
+      @ requires IDAcquisto >= 0;
+      @ assignable this.IDAcquisto;
+      @ ensures this.IDAcquisto == IDAcquisto;
+      @*/
+    public void setIDAcquisto(int IDAcquisto) {
+        this.IDAcquisto = IDAcquisto;
     }
 
     /*@ public normal_behavior
@@ -47,82 +50,21 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
-      @ ensures \result == IDMaglietta;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public int getIDMaglietta() {
-        return IDMaglietta;
-    }
-
-    /*@ public normal_behavior
-      @ ensures \result == quantita;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public int getQuantita() {
-        return quantita;
-    }
-
-    /*@ public normal_behavior
-      @ ensures \result == immagine;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public /*@ nullable @*/ String getImmagine() {
-        return immagine;
-    }
-
-    /*@ public normal_behavior
-      @ ensures \result == taglia;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public /*@ nullable @*/ String getTaglia() {
-        return taglia;
-    }
-
-    /*@ public normal_behavior
-      @ ensures \result == prezzoAq;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public float getPrezzoAq() {
-        return prezzoAq;
-    }
-
-    /*@ public normal_behavior
-      @ ensures \result == ivaAq;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public int getIvaAq() {
-        return ivaAq;
-    }
-
-    // =========================================================
-    // SETTERS (requires + assignable + ensures)
-    // - requires: precondition on inputs
-    // - assignable: which field(s) may be modified
-    // - ensures: postcondition after the call
-    // =========================================================
-
-    /*@ public normal_behavior
-      @ requires IDAcquisto >= 0;
-      @ assignable this.IDAcquisto;
-      @ ensures this.IDAcquisto == IDAcquisto;
-      @*/
-    public void setIDAcquisto(int IDAcquisto) {
-        this.IDAcquisto = IDAcquisto;
-    }
-
-    /*@ public normal_behavior
       @ requires IDOrdine >= 0;
       @ assignable this.IDOrdine;
       @ ensures this.IDOrdine == IDOrdine;
       @*/
     public void setIDOrdine(int IDOrdine) {
         this.IDOrdine = IDOrdine;
+    }
+
+    /*@ public normal_behavior
+      @ ensures \result == IDMaglietta;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public int getIDMaglietta() {
+        return IDMaglietta;
     }
 
     /*@ public normal_behavior
@@ -135,6 +77,15 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
+      @ ensures \result == quantita;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public int getQuantita() {
+        return quantita;
+    }
+
+    /*@ public normal_behavior
       @ requires quantita >= 0;
       @ assignable this.quantita;
       @ ensures this.quantita == quantita;
@@ -144,21 +95,46 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
-      @ requires immagine != null;
+      @ ensures \result == immagine;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public /*@ nullable @*/ String getImmagine() {
+        return immagine;
+    }
+
+    /*@ public normal_behavior
       @ assignable this.immagine;
       @ ensures this.immagine == immagine;
       @*/
-    public void setImmagine(String immagine) {
+    public void setImmagine(/*@ nullable @*/ String immagine) {
         this.immagine = immagine;
     }
 
     /*@ public normal_behavior
-      @ requires taglia != null;
+      @ ensures \result == taglia;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public /*@ nullable @*/ String getTaglia() {
+        return taglia;
+    }
+
+    /*@ public normal_behavior
       @ assignable this.taglia;
       @ ensures this.taglia == taglia;
       @*/
-    public void setTaglia(String taglia) {
+    public void setTaglia(/*@ nullable @*/ String taglia) {
         this.taglia = taglia;
+    }
+
+    /*@ public normal_behavior
+      @ ensures \result == prezzoAq;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public float getPrezzoAq() {
+        return prezzoAq;
     }
 
     /*@ public normal_behavior
@@ -171,6 +147,15 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
+      @ ensures \result == ivaAq;
+      @ assignable \nothing;
+      @ pure
+      @*/
+    public int getIvaAq() {
+        return ivaAq;
+    }
+
+    /*@ public normal_behavior
       @ requires ivaAq >= 0;
       @ assignable this.ivaAq;
       @ ensures this.ivaAq == ivaAq;
@@ -179,8 +164,7 @@ public class AcquistoBean {
         this.ivaAq = ivaAq;
     }
 
-    // Skip ESC verification for toString(): string concatenations can generate heavy SMT queries
-    // and slow down (or appear to hang) the verification process.
+    // Skip ESC verification for toString(): string concatenations can generate heavy SMT queries.
     //@ skipesc
     @Override
     public String toString() {

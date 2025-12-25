@@ -31,7 +31,6 @@ RUN mvn -q -DskipTests test-compile
 RUN mvn -q -DskipTests dependency:build-classpath \
     -Dmdep.includeScope=test \
     -Dmdep.outputFile=/tmp/cp.txt
- \
 
 # Run OpenJML in ESC mode (static verification).
 # - --release 21: aligns OpenJML (21) with Java library specifications shipped with the tool.
@@ -44,6 +43,7 @@ RUN openjml --esc --release 21 \
     --exec /opt/openjml/Solvers-linux/z3-4.3.1 \
     --class-path "$(cat /tmp/cp.txt):target/classes" \
     src/main/java/model/acquisto/AcquistoBean.java \
+    src/main/java/model/maglietta/MagliettaBean.java \
  && echo "OPENJML DONE"
 
 RUN echo "openjml-ok" > /openjml.ok
