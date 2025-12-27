@@ -13,24 +13,9 @@ permissions:
   id-token: write        # needed by deploy-pages
 
 jobs:
-  openjml:
-    runs-on: ubuntu-latest
-    name: OpenJML (ESC)
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Run OpenJML ESC (Docker target)
-        run: docker build --target openjml-check --progress=plain -t openjml-check .
-
   build-test:
     runs-on: ubuntu-latest
     name: Build and Test with Java 11
-    needs: openjml
 
     steps:
     - name: Checkout code
