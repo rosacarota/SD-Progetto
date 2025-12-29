@@ -3,6 +3,18 @@ package model.maglietta;
 public class MagliettaBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
+
+    /*@ public invariant ID >= 0;
+      @ public invariant 0 <= IVA && IVA <= 100;
+      @ public invariant prezzo >= 0.0f;
+
+      @ public invariant nome == null || (nome.length() > 0 && nome.length() <= 50);
+      @ public invariant colore == null || (colore.length() > 0 && colore.length() <= 30);
+      @ public invariant tipo == null || (tipo.length() > 0 && tipo.length() <= 50);
+      @ public invariant grafica == null || (grafica.length() > 0 && grafica.length() <= 400);
+      @ public invariant descrizione == null || (descrizione.length() > 0 && descrizione.length() <= 150);
+      @*/
+
     private /*@ spec_public @*/ int ID;
     private /*@ spec_public @*/ int IVA;
 
@@ -14,14 +26,14 @@ public class MagliettaBean {
 
     private /*@ spec_public @*/ float prezzo;
 
-    /*@ public invariant ID >= 0;
-      @ public invariant 0 <= IVA && IVA <= 100;
-      @ public invariant prezzo >= 0.0f;
+    /*@ public normal_behavior
+      @ ensures ID == 0 && IVA == 0 && prezzo == 0.0f;
+      @ ensures nome == null && colore == null && tipo == null && grafica == null && descrizione == null;
       @*/
+    public MagliettaBean() {}
 
     /*@ public normal_behavior
       @ ensures \result == ID;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getID() {
@@ -39,7 +51,6 @@ public class MagliettaBean {
 
     /*@ public normal_behavior
       @ ensures \result == IVA;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIVA() {
@@ -57,7 +68,6 @@ public class MagliettaBean {
 
     /*@ public normal_behavior
       @ ensures \result == nome;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getNome() {
@@ -65,6 +75,7 @@ public class MagliettaBean {
     }
 
     /*@ public normal_behavior
+      @ requires nome == null || (nome.length() > 0 && nome.length() <= 50);
       @ assignable this.nome;
       @ ensures this.nome == nome;
       @*/
@@ -74,7 +85,6 @@ public class MagliettaBean {
 
     /*@ public normal_behavior
       @ ensures \result == colore;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getColore() {
@@ -82,6 +92,7 @@ public class MagliettaBean {
     }
 
     /*@ public normal_behavior
+      @ requires colore == null || (colore.length() > 0 && colore.length() <= 30);
       @ assignable this.colore;
       @ ensures this.colore == colore;
       @*/
@@ -91,7 +102,6 @@ public class MagliettaBean {
 
     /*@ public normal_behavior
       @ ensures \result == tipo;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getTipo() {
@@ -99,6 +109,7 @@ public class MagliettaBean {
     }
 
     /*@ public normal_behavior
+      @ requires tipo == null || (tipo.length() > 0 && tipo.length() <= 50);
       @ assignable this.tipo;
       @ ensures this.tipo == tipo;
       @*/
@@ -108,7 +119,6 @@ public class MagliettaBean {
 
     /*@ public normal_behavior
       @ ensures \result == grafica;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getGrafica() {
@@ -116,6 +126,7 @@ public class MagliettaBean {
     }
 
     /*@ public normal_behavior
+      @ requires grafica == null || (grafica.length() > 0 && grafica.length() <= 400);
       @ assignable this.grafica;
       @ ensures this.grafica == grafica;
       @*/
@@ -124,8 +135,24 @@ public class MagliettaBean {
     }
 
     /*@ public normal_behavior
+      @ ensures \result == descrizione;
+      @ pure
+      @*/
+    public /*@ nullable @*/ String getDescrizione() {
+        return descrizione;
+    }
+
+    /*@ public normal_behavior
+      @ requires descrizione == null || (descrizione.length() > 0 && descrizione.length() <= 150);
+      @ assignable this.descrizione;
+      @ ensures this.descrizione == descrizione;
+      @*/
+    public void setDescrizione(/*@ nullable @*/ String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    /*@ public normal_behavior
       @ ensures \result == prezzo;
-      @ assignable \nothing;
       @ pure
       @*/
     public float getPrezzo() {
@@ -141,25 +168,7 @@ public class MagliettaBean {
         this.prezzo = prezzo;
     }
 
-    /*@ public normal_behavior
-      @ ensures \result == descrizione;
-      @ assignable \nothing;
-      @ pure
-      @*/
-    public /*@ nullable @*/ String getDescrizione() {
-        return descrizione;
-    }
-
-    /*@ public normal_behavior
-      @ assignable this.descrizione;
-      @ ensures this.descrizione == descrizione;
-      @*/
-    public void setDescrizione(/*@ nullable @*/ String descrizione) {
-        this.descrizione = descrizione;
-    }
-
-    // Skip ESC verification for toString(): string concatenations can generate heavy SMT queries
-    // and slow down (or appear to hang) the verification process.
+    // Skip ESC verification for toString(): string concatenations can generate heavy SMT queries.
     //@ skipesc
     @Override
     public String toString() {

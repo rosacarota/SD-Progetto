@@ -3,6 +3,27 @@ package model.acquisto;
 public class AcquistoBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
+
+    /*@ public invariant IDAcquisto  >= 0;
+      @ public invariant IDOrdine    >= 0;
+      @ public invariant IDMaglietta >= 0;
+
+      @ public invariant quantita >= 0;
+      @ public invariant quantita == 0 || quantita >= 1;
+
+      @ public invariant prezzoAq >= 0.0f;
+
+      @ public invariant 0 <= ivaAq && ivaAq <= 100;
+
+      @ public invariant immagine == null || (immagine.length() > 0 && immagine.length() <= 400);
+
+      @ public invariant
+      @   taglia == null ==> quantita == 0;
+      @ public invariant
+      @   taglia == null || (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
+      @       || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
+      @*/
+
     private /*@ spec_public @*/ int IDAcquisto;
     private /*@ spec_public @*/ int IDOrdine;
     private /*@ spec_public @*/ int IDMaglietta;
@@ -14,17 +35,15 @@ public class AcquistoBean {
     private /*@ spec_public nullable @*/ String immagine;
     private /*@ spec_public nullable @*/ String taglia;
 
-    /*@ public invariant IDAcquisto  >= 0;
-      @ public invariant IDOrdine    >= 0;
-      @ public invariant IDMaglietta >= 0;
-      @ public invariant quantita    >= 0;
-      @ public invariant prezzoAq    >= 0.0f;
-      @ public invariant ivaAq       >= 0;
+    /*@ public normal_behavior
+      @ ensures IDAcquisto == 0 && IDOrdine == 0 && IDMaglietta == 0;
+      @ ensures quantita == 0 && prezzoAq == 0.0f && ivaAq == 0;
+      @ ensures immagine == null && taglia == null;
       @*/
+    public AcquistoBean() {}
 
     /*@ public normal_behavior
       @ ensures \result == IDAcquisto;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIDAcquisto() {
@@ -42,7 +61,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == IDOrdine;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIDOrdine() {
@@ -60,7 +78,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == IDMaglietta;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIDMaglietta() {
@@ -78,7 +95,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == quantita;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getQuantita() {
@@ -86,7 +102,8 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
-      @ requires quantita >= 0;
+      @ requires quantita >= 0; // incrementale
+      @ // se vuoi essere DB-strong: requires quantita >= 1;
       @ assignable this.quantita;
       @ ensures this.quantita == quantita;
       @*/
@@ -96,7 +113,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == immagine;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getImmagine() {
@@ -104,6 +120,7 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
+      @ requires immagine == null || (immagine.length() > 0 && immagine.length() <= 400);
       @ assignable this.immagine;
       @ ensures this.immagine == immagine;
       @*/
@@ -113,7 +130,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == taglia;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getTaglia() {
@@ -121,6 +137,11 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
+      @ requires taglia == null ||
+      @   (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
+      @    || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
+      @ // facoltativo ma coerente: se taglia è null, allora l’oggetto non è un acquisto “valido”
+      @ requires taglia != null || this.quantita == 0;
       @ assignable this.taglia;
       @ ensures this.taglia == taglia;
       @*/
@@ -130,7 +151,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == prezzoAq;
-      @ assignable \nothing;
       @ pure
       @*/
     public float getPrezzoAq() {
@@ -148,7 +168,6 @@ public class AcquistoBean {
 
     /*@ public normal_behavior
       @ ensures \result == ivaAq;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIvaAq() {
@@ -156,7 +175,7 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
-      @ requires ivaAq >= 0;
+      @ requires 0 <= ivaAq && ivaAq <= 100;
       @ assignable this.ivaAq;
       @ ensures this.ivaAq == ivaAq;
       @*/
@@ -175,6 +194,7 @@ public class AcquistoBean {
                 ", immagine='" + immagine + '\'' +
                 ", prezzoAq=" + prezzoAq +
                 ", ivaAq=" + ivaAq +
+                ", taglia='" + taglia + '\'' +
                 '}';
     }
 }

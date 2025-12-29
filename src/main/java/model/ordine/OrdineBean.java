@@ -3,8 +3,21 @@ package model.ordine;
 import java.time.LocalDate;
 
 public class OrdineBean {
+    // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
+    // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
-    // Make fields "visible" to JML specifications of public methods (spec_public).
+    /*@ public invariant ID >= 0;
+      @ public invariant prezzoTotale >= 0.0f;
+
+      @ public invariant dataConsegna != null ==> dataOrdine != null;
+
+      @ public invariant username == null || (username.length() > 0 && username.length() <= 30);
+      @ public invariant nomeConsegna == null || (nomeConsegna.length() > 0 && nomeConsegna.length() <= 30);
+      @ public invariant cognomeConsegna == null || (cognomeConsegna.length() > 0 && cognomeConsegna.length() <= 30);
+      @ public invariant citta == null || (citta.length() > 0 && citta.length() <= 30);
+      @ public invariant via == null || (via.length() > 0 && via.length() <= 70);
+      @ public invariant cap == null || cap.length() == 5;
+      @*/
     private /*@ spec_public @*/ int ID;
 
     private /*@ spec_public nullable @*/ String username;
@@ -19,13 +32,8 @@ public class OrdineBean {
 
     private /*@ spec_public @*/ float prezzoTotale;
 
-    /*@ public invariant ID >= 0;
-      @ public invariant prezzoTotale >= 0.0f;
-      @*/
-
     /*@ public normal_behavior
       @ ensures \result == ID;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getID() {
@@ -43,7 +51,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == username;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getUsername() {
@@ -51,6 +58,7 @@ public class OrdineBean {
     }
 
     /*@ public normal_behavior
+      @ requires username == null || (username.length() > 0 && username.length() <= 30);
       @ assignable this.username;
       @ ensures this.username == username;
       @*/
@@ -60,7 +68,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == cap;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getCap() {
@@ -69,6 +76,7 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ assignable this.cap;
+      @ requires cap == null || cap.length() == 5;
       @ ensures this.cap == cap;
       @*/
     public void setCap(/*@ nullable @*/ String cap) {
@@ -77,7 +85,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == nomeConsegna;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getNomeConsegna() {
@@ -86,6 +93,7 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ assignable this.nomeConsegna;
+      @ requires nomeConsegna == null || (nomeConsegna.length() > 0 && nomeConsegna.length() <= 30);
       @ ensures this.nomeConsegna == nomeConsegna;
       @*/
     public void setNomeConsegna(/*@ nullable @*/ String nomeConsegna) {
@@ -94,7 +102,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == cognomeConsegna;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getCognomeConsegna() {
@@ -103,6 +110,7 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ assignable this.cognomeConsegna;
+      @ requires cognomeConsegna == null || (cognomeConsegna.length() > 0 && cognomeConsegna.length() <= 30);
       @ ensures this.cognomeConsegna == cognomeConsegna;
       @*/
     public void setCognomeConsegna(/*@ nullable @*/ String cognomeConsegna) {
@@ -111,7 +119,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == via;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getVia() {
@@ -120,6 +127,7 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ assignable this.via;
+      @ requires via == null || (via.length() > 0 && via.length() <= 70);
       @ ensures this.via == via;
       @*/
     public void setVia(/*@ nullable @*/ String via) {
@@ -128,7 +136,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == citta;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getCitta() {
@@ -137,6 +144,7 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ assignable this.citta;
+      @ requires citta == null || (citta.length() > 0 && citta.length() <= 30);
       @ ensures this.citta == citta;
       @*/
     public void setCitta(/*@ nullable @*/ String citta) {
@@ -145,7 +153,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == dataConsegna;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ LocalDate getDataConsegna() {
@@ -153,6 +160,7 @@ public class OrdineBean {
     }
 
     /*@ public normal_behavior
+      @requires dataConsegna == null || this.dataOrdine != null;
       @ assignable this.dataConsegna;
       @ ensures this.dataConsegna == dataConsegna;
       @*/
@@ -162,7 +170,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == dataOrdine;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ LocalDate getDataOrdine() {
@@ -170,6 +177,7 @@ public class OrdineBean {
     }
 
     /*@ public normal_behavior
+      @ requires dataOrdine == null ==> this.dataConsegna == null;
       @ assignable this.dataOrdine;
       @ ensures this.dataOrdine == dataOrdine;
       @*/
@@ -179,7 +187,6 @@ public class OrdineBean {
 
     /*@ public normal_behavior
       @ ensures \result == prezzoTotale;
-      @ assignable \nothing;
       @ pure
       @*/
     public float getPrezzoTotale() {

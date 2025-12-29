@@ -1,25 +1,31 @@
 package model.misura;
 
 public class MisuraBean {
+    // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
+    // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
+    /*@ public invariant IDMaglietta >= 0;
+      @ public invariant quantita >= 0;
+      @ public invariant quantita > 0 ==> taglia != null;
+      @ public invariant
+      @   taglia != null ==> (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
+      @     || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
+    @*/
     private /*@ spec_public @*/ int IDMaglietta;
     private /*@ spec_public @*/ int quantita;
     private /*@ spec_public nullable @*/ String taglia;
 
-    /*@ public invariant IDMaglietta >= 0;
-      @ public invariant quantita >= 0;
-      @*/
-
     /*@ public normal_behavior
-      @ ensures true;
-      @ assignable \nothing;
+      @ ensures IDMaglietta == 0 && quantita == 0 && taglia == null;
       @*/
     public MisuraBean() {}
 
     /*@ public normal_behavior
       @ requires IDMaglietta >= 0;
       @ requires quantita >= 0;
-      @ assignable \everything;
+      @ requires quantita > 0 ==> taglia != null;
+      @ requires taglia != null ==> (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
+      @     || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
       @ ensures this.IDMaglietta == IDMaglietta;
       @ ensures this.quantita == quantita;
       @ ensures this.taglia == taglia;
@@ -32,7 +38,6 @@ public class MisuraBean {
 
     /*@ public normal_behavior
       @ ensures \result == IDMaglietta;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getIDMaglietta() {
@@ -50,7 +55,6 @@ public class MisuraBean {
 
     /*@ public normal_behavior
       @ ensures \result == taglia;
-      @ assignable \nothing;
       @ pure
       @*/
     public /*@ nullable @*/ String getTaglia() {
@@ -58,6 +62,10 @@ public class MisuraBean {
     }
 
     /*@ public normal_behavior
+      @ requires taglia == null ||
+      @   (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
+      @    || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
+      @ requires taglia == null ==> this.quantita == 0; // facoltativo ma coerente
       @ assignable this.taglia;
       @ ensures this.taglia == taglia;
       @*/
@@ -67,7 +75,6 @@ public class MisuraBean {
 
     /*@ public normal_behavior
       @ ensures \result == quantita;
-      @ assignable \nothing;
       @ pure
       @*/
     public int getQuantita() {
@@ -76,6 +83,7 @@ public class MisuraBean {
 
     /*@ public normal_behavior
       @ requires quantita >= 0;
+      @ requires quantita > 0 ==> this.taglia != null;
       @ assignable this.quantita;
       @ ensures this.quantita == quantita;
       @*/
