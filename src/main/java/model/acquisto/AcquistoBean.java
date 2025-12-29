@@ -9,7 +9,6 @@ public class AcquistoBean {
       @ public invariant IDMaglietta >= 0;
 
       @ public invariant quantita >= 0;
-      @ public invariant quantita == 0 || quantita >= 1;
 
       @ public invariant prezzoAq >= 0.0f;
 
@@ -17,8 +16,9 @@ public class AcquistoBean {
 
       @ public invariant immagine == null || (immagine.length() > 0 && immagine.length() <= 400);
 
-      @ public invariant
-      @   taglia == null ==> quantita == 0;
+      @ public invariant taglia == null ==> quantita == 0;
+      @ public invariant quantita > 0 ==> taglia != null;
+
       @ public invariant
       @   taglia == null || (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
       @       || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
@@ -102,8 +102,8 @@ public class AcquistoBean {
     }
 
     /*@ public normal_behavior
-      @ requires quantita >= 0; // incrementale
-      @ // se vuoi essere DB-strong: requires quantita >= 1;
+      @ requires quantita >= 0;
+      @ requires quantita == 0 || this.taglia != null;
       @ assignable this.quantita;
       @ ensures this.quantita == quantita;
       @*/
@@ -140,7 +140,6 @@ public class AcquistoBean {
       @ requires taglia == null ||
       @   (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
       @    || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
-      @ // facoltativo ma coerente: se taglia è null, allora l’oggetto non è un acquisto “valido”
       @ requires taglia != null || this.quantita == 0;
       @ assignable this.taglia;
       @ ensures this.taglia == taglia;
