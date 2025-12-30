@@ -71,6 +71,9 @@ public class UpdateMaglietta extends HttpServlet {
                                     Files.deleteIfExists(p);
                                 }
                             } catch (IOException ignored) {
+                                // Intentionally ignored:
+                                // failure to delete a previous graphic file must not prevent
+                                // the upload of the new graphic or the update of the product.
                             }
                         });
             }
