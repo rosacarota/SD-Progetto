@@ -13,20 +13,29 @@ import java.sql.SQLException;
 @WebServlet("/Home")
 public class Home extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         MagliettaDAO magliettaDAO = new MagliettaDAO();
+        String targetJsp;
 
         try {
-            req.setAttribute("magliette", magliettaDAO.doRetriveAll(req.getParameter("ordine")));
+            req.setAttribute(
+                "magliette",
+                magliettaDAO.doRetriveAll(req.getParameter("ordine"))
+            );
+            targetJsp = "/index.jsp";
+
         } catch (SQLException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            targetJsp = "/pages/errorpage.jsp";
         }
 
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        req.getRequestDispatcher(targetJsp).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         doGet(req, resp);
     }
 }

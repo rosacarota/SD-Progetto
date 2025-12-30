@@ -14,25 +14,37 @@ import java.sql.SQLException;
 @WebServlet("/Catalogo")
 public class Catalogo extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         MagliettaDAO magliettaDAO = new MagliettaDAO();
+        String targetJsp;
 
         try {
-            req.setAttribute("magliette", magliettaDAO.doRetriveAll(req.getParameter("ordine")));
+            req.setAttribute(
+                "magliette",
+                magliettaDAO.doRetriveAll(req.getParameter("ordine"))
+            );
+
+            Integer tipoUtente =
+                (Integer) req.getSession().getAttribute("tipoUtente");
+
+            if (tipoUtente != null && tipoUtente.equals(Login.ADMIN)) {
+                targetJsp = "/catalogoAdmin.jsp";
+            } else {
+                targetJsp = "/catalogo.jsp";
+            }
+
         } catch (SQLException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            targetJsp = "/pages/errorpage.jsp";
         }
 
-        Integer tipoUtente = (Integer) req.getSession().getAttribute("tipoUtente");
-
-        if (tipoUtente != null && tipoUtente.equals(Login.ADMIN))
-            req.getRequestDispatcher("catalogoAdmin.jsp").forward(req, resp);
-        else
-            req.getRequestDispatcher("catalogo.jsp").forward(req, resp);
+        req.getRequestDispatcher(targetJsp).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         doGet(req, resp);
     }
 }
