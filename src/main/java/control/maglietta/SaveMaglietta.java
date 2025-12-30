@@ -35,10 +35,30 @@ public class SaveMaglietta extends HttpServlet {
         String nome = req.getParameter("nome");
         String colore = req.getParameter("colore");
         String tipo = req.getParameter("tipo");
-        int IVA = (int) Float.parseFloat(req.getParameter("IVA"));
-        float prezzo = Float.parseFloat(req.getParameter("prezzo"));
+        int IVA;
+        try {
+            IVA = (int) Float.parseFloat(req.getParameter("IVA"));
+        } catch (NumberFormatException | NullPointerException e) {
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
+            return;
+        }
+
+        float prezzo;
+        try {
+            prezzo = Float.parseFloat(req.getParameter("prezzo"));
+        } catch (NumberFormatException | NullPointerException e) {
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
+            return;
+        }
         String descrizione = req.getParameter("descrizione");
-        Part grafica = req.getPart("grafica");
+
+        Part grafica;
+        try {
+            grafica = req.getPart("grafica");
+        } catch (IOException | ServletException e) {
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
+            return;
+        }
 
         MagliettaDAO magliettaDAO = new MagliettaDAO();
 
@@ -60,7 +80,8 @@ public class SaveMaglietta extends HttpServlet {
         Path destinationFile = uploadDir.resolve(nomeFile).normalize();
 
         if (!destinationFile.startsWith(uploadDir)) {
-            throw new ServletException();
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
+            return;
         }
 
         try (InputStream inputStream = grafica.getInputStream()) {
@@ -80,7 +101,13 @@ public class SaveMaglietta extends HttpServlet {
         maglietta.setGrafica(relativePath);
 
         String taglia = req.getParameter("taglia");
-        int quantita = Integer.parseInt(req.getParameter("quantita"));
+        int quantita;
+        try {
+            quantita = Integer.parseInt(req.getParameter("quantita"));
+        } catch (NumberFormatException | NullPointerException e) {
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
+            return;
+        }
 
         MisuraDAO misuraDAO = new MisuraDAO();
 
