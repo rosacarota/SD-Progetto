@@ -36,7 +36,7 @@ public class StampaFattura extends HttpServlet {
         PDPageContentStream contentStream = null;
 
         try {
-            int IDOrdine = Integer.parseInt(req.getParameter("IDOrdine"));
+            int idOrdine = Integer.parseInt(req.getParameter("IDOrdine"));
 
             document = PDDocument.load(new File(PATH + FILE_NAME));
 
@@ -45,7 +45,7 @@ public class StampaFattura extends HttpServlet {
                     (Map<OrdineBean, Collection<AcquistoBean>>) req.getSession().getAttribute("ordini");
 
             Map.Entry<OrdineBean, Collection<AcquistoBean>> result =
-                    findOrder(ordini, IDOrdine);
+                    findOrder(ordini, idOrdine);
 
             if (result == null) {
                 throw new ServletException();
@@ -147,12 +147,15 @@ public class StampaFattura extends HttpServlet {
                 try {
                     contentStream.close();
                 } catch (IOException ignored) {
+                    System.err.println("Failed to close PDF content stream");
                 }
             }
             if (document != null) {
                 try {
                     document.close();
                 } catch (IOException ignored) {
+                    System.err.println("Failed to close PDF content stream");
+
                 }
             }
             req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
