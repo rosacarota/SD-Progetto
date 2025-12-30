@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 @WebServlet("/UpdateMaglietta")
 @MultipartConfig
 public class UpdateMaglietta extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -32,73 +31,58 @@ public class UpdateMaglietta extends HttpServlet {
         final String PATH = req.getServletContext().getRealPath("/images/grafiche/");
         Path uploadDir = Paths.get(PATH).toAbsolutePath().normalize();
 
-        int ID;
+        int ID, IVA, quantita;
+        float prezzo;
+
         try {
             ID = Integer.parseInt(req.getParameter("id"));
+            prezzo = Float.parseFloat(req.getParameter("prezzo"));
+            IVA = (int) Float.parseFloat(req.getParameter("IVA"));
+            quantita = Integer.parseInt(req.getParameter("quantita"));
         } catch (NumberFormatException | NullPointerException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
         }
 
         String nome = req.getParameter("nome");
-
-        float prezzo;
-        try {
-            prezzo = Float.parseFloat(req.getParameter("prezzo"));
-        } catch (NumberFormatException | NullPointerException e) {
-            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
-            return;
-        }
-
-        int IVA;
-        try {
-            IVA = (int) Float.parseFloat(req.getParameter("IVA"));
-        } catch (NumberFormatException | NullPointerException e) {
-            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
-            return;
-        }
+        String descrizione = req.getParameter("descrizione");
+        String taglia = req.getParameter("taglia");
 
         String colore = req.getParameter("colore");
-        String descrizione = req.getParameter("descrizione");
+        colore = (colore != null) ? colore : req.getParameter("coloreVecchio");
+
+        String tipo = req.getParameter("tipo");
+        tipo = (tipo != null) ? tipo : req.getParameter("tipoVecchio");
+
         String pathGrafica = req.getParameter("path");
 
         Part grafica;
         try {
             grafica = req.getPart("grafica");
+            if (grafica != null && grafica.getSubmittedFileName().isEmpty()) {
+                grafica = null;
+            }
         } catch (IOException | ServletException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
         }
 
-        if (colore == null)
-            colore = req.getParameter("coloreVecchio");
-
-        String tipoTmp = req.getParameter("tipo");
-        if (tipoTmp == null)
-            tipoTmp = req.getParameter("tipoVecchio");
-
-        final String tipo = tipoTmp;
-
-        MagliettaDAO magliettaDAO = new MagliettaDAO();
-
-        if (grafica != null && !grafica.getSubmittedFileName().isEmpty()) {
+        if (grafica != null) {
 
             int extensionIndex = grafica.getSubmittedFileName().lastIndexOf(".");
             String estensione = grafica.getSubmittedFileName().substring(extensionIndex);
-            String nomeFile = ID + tipo + estensione;
-
-            nomeFile = nomeFile.replaceAll("[^a-zA-Z0-9._-]", "_");
+            String nomeFile = (ID + tipo + estensione)
+                    .replaceAll("[^a-zA-Z0-9._-]", "_");
 
             pathGrafica = "images/grafiche/" + nomeFile;
 
             try (Stream<Path> files = Files.list(uploadDir)) {
-                files
-                        .filter(p -> p.getFileName().toString().startsWith(ID + tipo))
+                String finalTipo = tipo;
+                files.filter(p -> p.normalize().startsWith(uploadDir))
+                        .filter(p -> p.getFileName().toString().startsWith(ID + finalTipo))
                         .forEach(p -> {
                             try {
-                                if (p.normalize().startsWith(uploadDir)) {
-                                    Files.deleteIfExists(p);
-                                }
+                                Files.deleteIfExists(p);
                             } catch (IOException ignored) {
                                 // Intentionally ignored:
                                 // failure to delete a previous graphic file must not prevent
@@ -111,7 +95,6 @@ public class UpdateMaglietta extends HttpServlet {
             }
 
             Path destinationFile = uploadDir.resolve(nomeFile).normalize();
-
             if (!destinationFile.startsWith(uploadDir)) {
                 req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
                 return;
@@ -135,23 +118,11 @@ public class UpdateMaglietta extends HttpServlet {
         maglietta.setDescrizione(descrizione);
         maglietta.setGrafica(pathGrafica);
 
-
-        int quantita;
-        try {
-            quantita = Integer.parseInt(req.getParameter("quantita"));
-        } catch (NumberFormatException | NullPointerException e) {
-            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
-            return;
-        }
-
-        String taglia = req.getParameter("taglia");
-
         MisuraBean misuraBean = new MisuraBean(ID, quantita, taglia);
-        MisuraDAO misuraDAO = new MisuraDAO();
 
         try {
-            magliettaDAO.doUpdate(maglietta);
-            misuraDAO.doUpdate(misuraBean);
+            new MagliettaDAO().doUpdate(maglietta);
+            new MisuraDAO().doUpdate(misuraBean);
         } catch (SQLException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
