@@ -20,7 +20,6 @@
 
 .logo-container {
   /* Puoi rimuovere l'altezza esplicita, poiché il contenitore adatta ora l'altezza in base al contenuto */
-  /* height: 100%; */
   display: flex; /* Imposta "logo-container" come flex container */
   align-items: center; /* Centra il contenuto verticalmente */
 	margin-right: auto;

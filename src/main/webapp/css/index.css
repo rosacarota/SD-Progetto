@@ -163,11 +163,9 @@ select {
 
 .niente{
 	font-size:20%;
-	/*display: center;*/
 	font-weight:bold;
 }
 
-/* bottone acquisti*/
 .button {
   position: relative;
   margin: 0;

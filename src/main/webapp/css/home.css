@@ -313,11 +313,9 @@ select {
 
 .niente{
 	font-size:20%;
-	/*display: center;*/
 	font-weight:bold;
 }
 
-/* bottone acquisti*/
 .button, .button2 {
   position: relative;
   margin: 0;
