@@ -23,7 +23,11 @@ public class SaveCustom extends HttpServlet {
         String imgData = req.getParameter("imgData");
 
         if (imgData == null || imgData.isEmpty()) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            try {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            } catch (ServletException | IOException e) {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            }
             return;
         }
 
@@ -71,7 +75,11 @@ public class SaveCustom extends HttpServlet {
             resp.sendRedirect("pages/carrello.jsp");
 
         } catch (SQLException | IOException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            try {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            } catch (ServletException | IOException ex) {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            }
         }
     }
 

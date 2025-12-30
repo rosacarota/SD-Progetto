@@ -21,14 +21,17 @@ import java.util.Map;
 @WebServlet("/StoricoOrdini")
 public class StoricoOrdini extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         UtenteBean utenteBean = (UtenteBean) req.getSession().getAttribute("utente");
 
         OrdineDAO ordineDAO = new OrdineDAO();
         AcquistoDAO acquistoDAO = new AcquistoDAO();
 
         try {
-            Collection<OrdineBean> ordini = ordineDAO.doRetrieveByKey(utenteBean.getUsername());
+            Collection<OrdineBean> ordini =
+                    ordineDAO.doRetrieveByKey(utenteBean.getUsername());
 
             Map<OrdineBean, Collection<AcquistoBean>> map = new HashMap<>();
 
@@ -36,22 +39,35 @@ public class StoricoOrdini extends HttpServlet {
                 try {
                     map.put(o, acquistoDAO.doRetrieveByOrdine(o.getID()));
                 } catch (SQLException e) {
-                    req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+                    try {
+                        req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+                    } catch (ServletException | IOException ex) {
+                        req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+                    }
+                    return;
                 }
             }
 
             req.setAttribute("ordini", map);
 
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("pages/profilo.jsp");
-            requestDispatcher.forward(req,resp);
+            try {
+                req.getRequestDispatcher("pages/profilo.jsp").forward(req, resp);
+            } catch (ServletException | IOException e) {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            }
 
         } catch (SQLException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            try {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            } catch (ServletException | IOException ex) {
+                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            }
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         doPost(req, resp);
     }
 }

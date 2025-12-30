@@ -21,8 +21,8 @@ public class Home extends HttpServlet {
 
         try {
             req.setAttribute(
-                "magliette",
-                magliettaDAO.doRetriveAll(req.getParameter("ordine"))
+                    "magliette",
+                    magliettaDAO.doRetriveAll(req.getParameter("ordine"))
             );
             targetJsp = "/index.jsp";
 
@@ -30,7 +30,11 @@ public class Home extends HttpServlet {
             targetJsp = "/pages/errorpage.jsp";
         }
 
-        req.getRequestDispatcher(targetJsp).forward(req, resp);
+        try {
+            req.getRequestDispatcher(targetJsp).forward(req, resp);
+        } catch (ServletException | IOException e) {
+            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+        }
     }
 
     @Override

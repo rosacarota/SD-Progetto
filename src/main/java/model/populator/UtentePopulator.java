@@ -201,9 +201,9 @@ public class UtentePopulator implements TablePopulator {
                 LocalDate.parse("2028-06-02"),"12345","36615","0 Maple Wood Terrace",
                 "Ampele├¡es","user", key));
 
-        list.add(make("username","username","user","user","user",
-                LocalDate.parse("2002-04-05"), null,null,null,null,null,
-                null,null,null,"user", key));
+        list.add(make("username","username","Casotto","Mango Loco","username@example.com",
+                LocalDate.parse("2002-04-05"),"Casotto","Mango Loco","4111111111111111",
+                LocalDate.parse("2027-12-31"),"123","00100","Via Roma 1","Roma","user", key));
 
         return list;
     }

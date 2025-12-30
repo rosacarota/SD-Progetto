@@ -12,7 +12,9 @@ import java.io.IOException;
 @WebServlet("/AggiungiMaglietta")
 public class AggiungiMaglietta extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
         HttpSession session = req.getSession();
         CarrelloModel carrello;
 
@@ -24,16 +26,20 @@ public class AggiungiMaglietta extends HttpServlet {
             }
         }
 
-        int ID = Integer.parseInt(req.getParameter("ID"));
-        String quantita = req.getParameter("quantita");
-        String taglia = req.getParameter("taglia");
+        try {
+            int ID = Integer.parseInt(req.getParameter("ID"));
+            String quantita = req.getParameter("quantita");
+            String taglia = req.getParameter("taglia");
 
-        if (quantita == null) {
-            carrello.aggiungi(ID, taglia);
-            resp.sendRedirect("pages/carrello.jsp");
-        }
-        else {
-            carrello.setQuantita(ID, Integer.parseInt(quantita), taglia);
+            if (quantita == null) {
+                carrello.aggiungi(ID, taglia);
+                resp.sendRedirect("pages/carrello.jsp");
+            } else {
+                carrello.setQuantita(ID, Integer.parseInt(quantita), taglia);
+            }
+
+        } catch (NumberFormatException | IOException e) {
+            resp.sendRedirect("pages/errorpage.jsp");
         }
     }
 }

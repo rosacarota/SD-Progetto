@@ -22,12 +22,12 @@ public class Catalogo extends HttpServlet {
 
         try {
             req.setAttribute(
-                "magliette",
-                magliettaDAO.doRetriveAll(req.getParameter("ordine"))
+                    "magliette",
+                    magliettaDAO.doRetriveAll(req.getParameter("ordine"))
             );
 
             Integer tipoUtente =
-                (Integer) req.getSession().getAttribute("tipoUtente");
+                    (Integer) req.getSession().getAttribute("tipoUtente");
 
             if (tipoUtente != null && tipoUtente.equals(Login.ADMIN)) {
                 targetJsp = "/catalogoAdmin.jsp";
@@ -39,7 +39,11 @@ public class Catalogo extends HttpServlet {
             targetJsp = "/pages/errorpage.jsp";
         }
 
-        req.getRequestDispatcher(targetJsp).forward(req, resp);
+        try {
+            req.getRequestDispatcher(targetJsp).forward(req, resp);
+        } catch (ServletException | IOException e) {
+            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+        }
     }
 
     @Override
