@@ -44,20 +44,16 @@ public class StampaFattura extends HttpServlet {
             Map<OrdineBean, Collection<AcquistoBean>> ordini =
                     (Map<OrdineBean, Collection<AcquistoBean>>) req.getSession().getAttribute("ordini");
 
-            OrdineBean ordine = null;
-            Collection<AcquistoBean> acquisti = null;
+            Map.Entry<OrdineBean, Collection<AcquistoBean>> result =
+                    findOrder(ordini, IDOrdine);
 
-            for (Map.Entry<OrdineBean, Collection<AcquistoBean>> entry : ordini.entrySet()) {
-                if (entry.getKey().getID() == IDOrdine) {
-                    ordine = entry.getKey();
-                    acquisti = entry.getValue();
-                    break;
-                }
-            }
-
-            if (ordine == null || acquisti == null) {
+            if (result == null) {
                 throw new ServletException();
             }
+
+            OrdineBean ordine = result.getKey();
+            Collection<AcquistoBean> acquisti = result.getValue();
+
 
             PDPage page = document.getPage(0);
             contentStream = new PDPageContentStream(
@@ -168,4 +164,17 @@ public class StampaFattura extends HttpServlet {
             throws ServletException, IOException {
         doPost(req, resp);
     }
+
+    private Map.Entry<OrdineBean, Collection<AcquistoBean>> findOrder(
+            Map<OrdineBean, Collection<AcquistoBean>> ordini,
+            int idOrdine) {
+
+        for (Map.Entry<OrdineBean, Collection<AcquistoBean>> entry : ordini.entrySet()) {
+            if (entry.getKey().getID() == idOrdine) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
 }
