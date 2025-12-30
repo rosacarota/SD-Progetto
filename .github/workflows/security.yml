@@ -52,12 +52,16 @@ jobs:
 
       # Creates the context.xml by replacing placeholders in the template with real database credentials from GitHub Secrets.
       - name: Generate context.xml from template
+        env:
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
         run: |
           sed \
-            -e "s#YOUR_DB_USER#${{ secrets.MYSQL_USER }}#g" \
-            -e "s#YOUR_DB_PASS#${{ secrets.MYSQL_PASSWORD }}#g" \
+            -e "s#YOUR_DB_USER#${MYSQL_USER}#g" \
+            -e "s#YOUR_DB_PASS#${MYSQL_PASSWORD}#g" \
             -e "s#YOUR_DB_HOST#db#g" \
-            -e "s#YOUR_DB_NAME#${{ secrets.MYSQL_DATABASE }}#g" \
+            -e "s#YOUR_DB_NAME#${MYSQL_DATABASE}#g" \
             src/main/webapp/META-INF/context-template.xml \
             > src/main/webapp/META-INF/context.xml
 

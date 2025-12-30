@@ -33,14 +33,17 @@ jobs:
       - name: Build application
         run: mvn clean package -DskipTests
 
-      # Creates the context.xml by replacing placeholders in the template with real database credentials from GitHub Secrets.
       - name: Generate context.xml from template
+        env:
+          DB_USER: ${{ secrets.MYSQL_USER }}
+          DB_PASS: ${{ secrets.MYSQL_PASSWORD }}
+          DB_NAME: ${{ secrets.MYSQL_DATABASE }}
         run: |
           sed \
-            -e "s#YOUR_DB_USER#${{ secrets.MYSQL_USER }}#g" \
-            -e "s#YOUR_DB_PASS#${{ secrets.MYSQL_PASSWORD }}#g" \
+            -e "s#YOUR_DB_USER#${DB_USER}#g" \
+            -e "s#YOUR_DB_PASS#${DB_PASS}#g" \
             -e "s#YOUR_DB_HOST#db#g" \
-            -e "s#YOUR_DB_NAME#${{ secrets.MYSQL_DATABASE }}#g" \
+            -e "s#YOUR_DB_NAME#${DB_NAME}#g" \
             src/main/webapp/META-INF/context-template.xml \
             > src/main/webapp/META-INF/context.xml
 
