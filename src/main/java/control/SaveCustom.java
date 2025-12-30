@@ -20,6 +20,7 @@ public class SaveCustom extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String PATH = req.getServletContext().getRealPath("/images/grafiche/");
+        final String ERROR_PAGE = "/pages/errorpage.jsp";
 
         String imgData = req.getParameter("imgData");
 
@@ -55,7 +56,7 @@ public class SaveCustom extends HttpServlet {
                 // Salvataggio maglietta
                 magliettaDAO.doSave(maglietta);
             } catch (SQLException e) {
-                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+                req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             }
 
             HttpSession session = req.getSession();
@@ -76,10 +77,10 @@ public class SaveCustom extends HttpServlet {
                 carrello.aggiungi(ID, taglia);
                 resp.sendRedirect("pages/carrello.jsp");
             } catch (SQLException e) {
-                req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+                req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             }
         } else {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
         }
     }
 

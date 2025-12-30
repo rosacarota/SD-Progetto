@@ -27,12 +27,6 @@ public class MagliettaBean {
     private /*@ spec_public @*/ float prezzo;
 
     /*@ public normal_behavior
-      @ ensures ID == 0 && IVA == 0 && prezzo == 0.0f;
-      @ ensures nome == null && colore == null && tipo == null && grafica == null && descrizione == null;
-      @*/
-    public MagliettaBean() {}
-
-    /*@ public normal_behavior
       @ ensures \result == ID;
       @ pure
       @*/

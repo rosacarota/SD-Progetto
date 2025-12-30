@@ -23,13 +23,13 @@ import java.util.Map;
 
 @WebServlet("/StampaFattura")
 public class StampaFattura extends HttpServlet {
-    private static final String fileName = "fattura.pdf";
+    private static final String FILE_NAME = "fattura.pdf";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String PATH = req.getServletContext().getRealPath("/pdf/");
 
-        PDDocument document = PDDocument.load(new File(PATH + fileName));
+        PDDocument document = PDDocument.load(new File(PATH + FILE_NAME));
         UtenteBean utenteBean = (UtenteBean) req.getSession().getAttribute("utente");
         OrdineBean ordine = null;
         Collection<AcquistoBean> acquisti = null;

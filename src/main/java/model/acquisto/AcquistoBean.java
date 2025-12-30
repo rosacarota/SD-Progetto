@@ -36,13 +36,6 @@ public class AcquistoBean {
     private /*@ spec_public nullable @*/ String taglia;
 
     /*@ public normal_behavior
-      @ ensures IDAcquisto == 0 && IDOrdine == 0 && IDMaglietta == 0;
-      @ ensures quantita == 0 && prezzoAq == 0.0f && ivaAq == 0;
-      @ ensures immagine == null && taglia == null;
-      @*/
-    public AcquistoBean() {}
-
-    /*@ public normal_behavior
       @ ensures \result == IDAcquisto;
       @ pure
       @*/

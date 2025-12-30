@@ -77,7 +77,7 @@ public class AcquistoDAO implements DAOInterface<AcquistoBean, Integer> {
 
     @Override
     public void doUpdate(AcquistoBean product) {
-
+        // Update operation is not supported for Acquisto entities
     }
 
     @Override

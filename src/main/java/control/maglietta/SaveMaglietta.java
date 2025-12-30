@@ -28,6 +28,7 @@ public class SaveMaglietta extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        final String ERROR_PAGE = "/pages/errorpage.jsp";
         final String PATH = req.getServletContext().getRealPath("/images/grafiche/");
         Path uploadDir = Paths.get(PATH).toAbsolutePath().normalize();
 
@@ -48,7 +49,7 @@ public class SaveMaglietta extends HttpServlet {
             String estensione = grafica.getSubmittedFileName().substring(extensionIndex);
             nomeFile = magliettaDAO.getMaxID() + tipo + estensione;
         } catch (SQLException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
         }
 
@@ -65,7 +66,7 @@ public class SaveMaglietta extends HttpServlet {
         try (InputStream inputStream = grafica.getInputStream()) {
             Files.copy(inputStream, destinationFile);
         } catch (IOException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
         }
 
@@ -89,7 +90,7 @@ public class SaveMaglietta extends HttpServlet {
                     new MisuraBean(magliettaDAO.getMaxID() - 1, quantita, taglia);
             misuraDAO.doSave(misuraBean);
         } catch (SQLException e) {
-            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
         }
 
