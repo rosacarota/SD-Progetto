@@ -43,4 +43,16 @@ public class RimuoviMagliettaTest {
         verify(carrelloMock).rimuovi(5, "M");
         verifyNoInteractions(resp);
     }
+
+    // {id_non_numerico}
+    @Test
+    void doPost_idNonNumerico_redirectError() throws Exception {
+        when(req.getParameter("ID")).thenReturn("abc");
+        when(req.getParameter("taglia")).thenReturn("M");
+
+        servlet.doPost(req, resp);
+
+        verify(resp).sendRedirect("pages/errorpage.jsp");
+        verify(carrelloMock, never()).rimuovi(anyInt(), any());
+    }
 }

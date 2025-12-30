@@ -12,7 +12,9 @@ import java.io.IOException;
 @WebServlet("/RimuoviMaglietta")
 public class RimuoviMaglietta extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
         HttpSession session = req.getSession();
         CarrelloModel carrello;
 
@@ -20,7 +22,14 @@ public class RimuoviMaglietta extends HttpServlet {
             carrello = (CarrelloModel) session.getAttribute("carrello");
         }
 
-        int ID = Integer.parseInt(req.getParameter("ID"));
+        int ID;
+        try {
+            ID = Integer.parseInt(req.getParameter("ID"));
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("pages/errorpage.jsp");
+            return;
+        }
+
         String taglia = req.getParameter("taglia");
 
         carrello.rimuovi(ID, taglia);
