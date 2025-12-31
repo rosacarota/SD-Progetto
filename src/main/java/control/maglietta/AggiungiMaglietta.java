@@ -27,15 +27,15 @@ public class AggiungiMaglietta extends HttpServlet {
         }
 
         try {
-            int ID = Integer.parseInt(req.getParameter("ID"));
+            int id = Integer.parseInt(req.getParameter("ID"));
             String quantita = req.getParameter("quantita");
             String taglia = req.getParameter("taglia");
 
             if (quantita == null) {
-                carrello.aggiungi(ID, taglia);
+                carrello.aggiungi(id, taglia);
                 resp.sendRedirect("pages/carrello.jsp");
             } else {
-                carrello.setQuantita(ID, Integer.parseInt(quantita), taglia);
+                carrello.setQuantita(id, Integer.parseInt(quantita), taglia);
             }
 
         } catch (NumberFormatException | IOException e) {

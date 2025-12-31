@@ -22,9 +22,9 @@ public class RimuoviMaglietta extends HttpServlet {
             carrello = (CarrelloModel) session.getAttribute("carrello");
         }
 
-        int ID;
+        int id;
         try {
-            ID = Integer.parseInt(req.getParameter("ID"));
+            id = Integer.parseInt(req.getParameter("ID"));
         } catch (NumberFormatException e) {
             resp.sendRedirect("pages/errorpage.jsp");
             return;
@@ -32,6 +32,6 @@ public class RimuoviMaglietta extends HttpServlet {
 
         String taglia = req.getParameter("taglia");
 
-        carrello.rimuovi(ID, taglia);
+        carrello.rimuovi(id, taglia);
     }
 }

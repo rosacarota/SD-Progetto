@@ -12,15 +12,15 @@ import java.sql.SQLException;
 
 @WebServlet("/DeleteMaglietta")
 public class DeleteMaglietta extends HttpServlet {
-    final String ERROR_PAGE = "/pages/errorpage.jsp";
+    static final String ERROR_PAGE = "/pages/errorpage.jsp";
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        int ID;
+        int id;
 
         try {
-            ID = Integer.parseInt(req.getParameter("ID"));
+            id = Integer.parseInt(req.getParameter("ID"));
         } catch (NumberFormatException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
@@ -29,7 +29,7 @@ public class DeleteMaglietta extends HttpServlet {
         MagliettaDAO magliettaDAO = new MagliettaDAO();
 
         try {
-            if (!magliettaDAO.deleteMaglietta(ID)) {
+            if (!magliettaDAO.deleteMaglietta(id)) {
                 req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
                 return;
             }

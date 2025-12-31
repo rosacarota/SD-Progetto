@@ -31,13 +31,15 @@ public class UpdateMaglietta extends HttpServlet {
         final String PATH = req.getServletContext().getRealPath("/images/grafiche/");
         Path uploadDir = Paths.get(PATH).toAbsolutePath().normalize();
 
-        int ID, IVA, quantita;
+        int id;
+        int iva;
+        int quantita;
         float prezzo;
 
         try {
-            ID = Integer.parseInt(req.getParameter("id"));
+            id = Integer.parseInt(req.getParameter("id"));
             prezzo = Float.parseFloat(req.getParameter("prezzo"));
-            IVA = (int) Float.parseFloat(req.getParameter("IVA"));
+            iva = (int) Float.parseFloat(req.getParameter("IVA"));
             quantita = Integer.parseInt(req.getParameter("quantita"));
         } catch (NumberFormatException | NullPointerException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
@@ -70,7 +72,7 @@ public class UpdateMaglietta extends HttpServlet {
 
         if (grafica != null) {
             try {
-                pathGrafica = gestisciUploadGrafica(grafica, ID, tipo, uploadDir, req, resp);
+                pathGrafica = gestisciUploadGrafica(grafica, id, tipo, uploadDir, req, resp);
             } catch (ServletException | IOException e) {
                 req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
                 return;
@@ -79,16 +81,16 @@ public class UpdateMaglietta extends HttpServlet {
         }
 
         MagliettaBean maglietta = new MagliettaBean();
-        maglietta.setID(ID);
+        maglietta.setID(id);
         maglietta.setNome(nome);
         maglietta.setPrezzo(prezzo);
-        maglietta.setIVA(IVA);
+        maglietta.setIVA(iva);
         maglietta.setColore(colore);
         maglietta.setTipo(tipo);
         maglietta.setDescrizione(descrizione);
         maglietta.setGrafica(pathGrafica);
 
-        MisuraBean misuraBean = new MisuraBean(ID, quantita, taglia);
+        MisuraBean misuraBean = new MisuraBean(id, quantita, taglia);
 
         try {
             new MagliettaDAO().doUpdate(maglietta);
@@ -103,7 +105,7 @@ public class UpdateMaglietta extends HttpServlet {
 
     private String gestisciUploadGrafica(
             Part grafica,
-            int ID,
+            int id,
             String tipo,
             Path uploadDir,
             HttpServletRequest req,
@@ -114,14 +116,14 @@ public class UpdateMaglietta extends HttpServlet {
 
         int extensionIndex = grafica.getSubmittedFileName().lastIndexOf(".");
         String estensione = grafica.getSubmittedFileName().substring(extensionIndex);
-        String nomeFile = (ID + tipo + estensione)
+        String nomeFile = (id + tipo + estensione)
                 .replaceAll("[^a-zA-Z0-9._-]", "_");
 
         String pathGrafica = "images/grafiche/" + nomeFile;
 
         try (Stream<Path> files = Files.list(uploadDir)) {
             files.filter(p -> p.normalize().startsWith(uploadDir))
-                    .filter(p -> p.getFileName().toString().startsWith(ID + tipo))
+                    .filter(p -> p.getFileName().toString().startsWith(id + tipo))
                     .forEach(p -> {
                         try { Files.deleteIfExists(p); } catch (IOException ignored) {/* Ignored*/ }
                     });

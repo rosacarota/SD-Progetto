@@ -32,9 +32,9 @@ public class CarrelloModel implements Serializable {
         this.carrello = (ArrayList<MagliettaOrdine>) carrello;
     }
 
-    public synchronized void aggiungi(int ID, String taglia) {
+    public synchronized void aggiungi(int id, String taglia) {
         for (MagliettaOrdine m : carrello) {
-            if (m.getMagliettaBean().getID() == ID &&
+            if (m.getMagliettaBean().getID() == id &&
                 m.getTaglia().equals(taglia)) {
                 m.incrementaQuantita();
                 return;
@@ -42,16 +42,16 @@ public class CarrelloModel implements Serializable {
         }
 
         try {
-            MagliettaBean magliettaBean = magliettaDAO.doRetrieveByKey(ID);
+            MagliettaBean magliettaBean = magliettaDAO.doRetrieveByKey(id);
             carrello.add(new MagliettaOrdine(magliettaBean, taglia));
         } catch (SQLException e) {
             throw new GenericError();
         }
     }
 
-    public synchronized void setQuantita(int ID, int quantita, String taglia) {
+    public synchronized void setQuantita(int id, int quantita, String taglia) {
         for (MagliettaOrdine m : carrello) {
-            if (m.getMagliettaBean().getID() == ID && m.getTaglia().equals(taglia)) {
+            if (m.getMagliettaBean().getID() == id && m.getTaglia().equals(taglia)) {
                 if (m.getQuantita() <= 0 || quantita == 0)
                     carrello.remove(m);
                 else
@@ -61,12 +61,9 @@ public class CarrelloModel implements Serializable {
         }
     }
 
-    public synchronized void rimuovi(int ID, String taglia) {
-        carrello.removeIf(m -> m.getMagliettaBean().getID() == ID &&
+    public synchronized void rimuovi(int id, String taglia) {
+        carrello.removeIf(m -> m.getMagliettaBean().getID() == id &&
                 m.getTaglia().equals(taglia));
     }
 
-    public void setCarrello(ArrayList<MagliettaOrdine> carrello) {
-        this.carrello = carrello;
-    }
 }

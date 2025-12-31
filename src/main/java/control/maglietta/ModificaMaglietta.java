@@ -19,10 +19,10 @@ public class ModificaMaglietta extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        int ID;
+        int id;
 
         try {
-            ID = Integer.parseInt(req.getParameter("id"));
+            id = Integer.parseInt(req.getParameter("id"));
         } catch (NumberFormatException e) {
             req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
             return;
@@ -32,9 +32,9 @@ public class ModificaMaglietta extends HttpServlet {
         MisuraDAO misuraDAO = new MisuraDAO();
 
         try {
-            MagliettaBean magliettaBean = magliettaDAO.doRetrieveByKey(ID);
+            MagliettaBean magliettaBean = magliettaDAO.doRetrieveByKey(id);
             req.setAttribute("maglietta", magliettaBean);
-            req.setAttribute("misure", misuraDAO.doRetrieveAll(ID));
+            req.setAttribute("misure", misuraDAO.doRetrieveAll(id));
         } catch (SQLException e) {
             req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
             return;

@@ -35,9 +35,9 @@ public class SaveMaglietta extends HttpServlet {
         String nome = req.getParameter("nome");
         String colore = req.getParameter("colore");
         String tipo = req.getParameter("tipo");
-        int IVA;
+        int iva;
         try {
-            IVA = (int) Float.parseFloat(req.getParameter("IVA"));
+            iva = (int) Float.parseFloat(req.getParameter("IVA"));
         } catch (NumberFormatException | NullPointerException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
             return;
@@ -96,7 +96,7 @@ public class SaveMaglietta extends HttpServlet {
         maglietta.setColore(colore);
         maglietta.setTipo(tipo);
         maglietta.setPrezzo(prezzo);
-        maglietta.setIVA(IVA);
+        maglietta.setIVA(iva);
         maglietta.setDescrizione(descrizione);
         maglietta.setGrafica(relativePath);
 

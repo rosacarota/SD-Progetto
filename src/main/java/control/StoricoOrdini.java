@@ -6,7 +6,6 @@ import model.ordine.OrdineBean;
 import model.ordine.OrdineDAO;
 import model.utente.UtenteBean;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +39,6 @@ public class StoricoOrdini extends HttpServlet {
 
         } catch (SQLException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
-            return;
         }
     }
 

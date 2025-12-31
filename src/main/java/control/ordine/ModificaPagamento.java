@@ -3,7 +3,6 @@ package control.ordine;
 import model.utente.UtenteBean;
 import model.utente.UtenteDAO;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,13 +24,13 @@ public class ModificaPagamento extends HttpServlet {
         String numeroCarta = req.getParameter("numCartaNuova");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataScadenza = LocalDate.parse(req.getParameter("dataScadNuova"), formatter);
-        String CVV = req.getParameter("CVVNuovo");
+        String cvv = req.getParameter("CVVNuovo");
 
         utenteBean.setNomeCarta(nomeCarta);
         utenteBean.setCognomeCarta(cognomeCarta);
         utenteBean.setNumCarta(numeroCarta);
         utenteBean.setDataScadenza(dataScadenza);
-        utenteBean.setCVV(CVV);
+        utenteBean.setCVV(cvv);
 
         UtenteDAO utenteDAO = new UtenteDAO();
         try {
