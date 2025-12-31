@@ -30,7 +30,7 @@ public class UtenteBean implements Serializable {
     private /*@ spec_public nullable @*/ String nomeCarta;
     private /*@ spec_public nullable @*/ String cognomeCarta;
     private /*@ spec_public nullable @*/ String numCarta;
-    private /*@ spec_public nullable @*/ String CVV;
+    private /*@ spec_public nullable @*/ String cvv;
 
     private /*@ spec_public nullable @*/ String cap;
     private /*@ spec_public nullable @*/ String via;
@@ -175,19 +175,19 @@ public class UtenteBean implements Serializable {
     }
 
     /*@ public normal_behavior
-      @ ensures \result == CVV;
+      @ ensures \result == cvv;
       @ pure
       @*/
     public /*@ nullable @*/ String getCVV() {
-        return CVV;
+        return cvv;
     }
 
     /*@ public normal_behavior
-      @ assignable this.CVV;
-      @ ensures this.CVV == CVV;
+      @ assignable this.cvv;
+      @ ensures this.cvv == cvv;
       @*/
-    public void setCVV(/*@ nullable @*/ String CVV) {
-        this.CVV = CVV;
+    public void setCVV(/*@ nullable @*/ String cvv) {
+        this.cvv = cvv;
     }
 
     /*@ public normal_behavior

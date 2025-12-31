@@ -6,7 +6,7 @@ public class OrdineBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
-    /*@ public invariant ID >= 0;
+    /*@ public invariant id >= 0;
       @ public invariant prezzoTotale >= 0.0f;
 
       @ public invariant dataConsegna != null ==> dataOrdine != null;
@@ -18,7 +18,7 @@ public class OrdineBean {
       @ public invariant via == null || (via.length() > 0 && via.length() <= 70);
       @ public invariant cap == null || cap.length() == 5;
       @*/
-    private /*@ spec_public @*/ int ID;
+    private /*@ spec_public @*/ int id;
 
     private /*@ spec_public nullable @*/ String username;
     private /*@ spec_public nullable @*/ String cap;
@@ -33,20 +33,20 @@ public class OrdineBean {
     private /*@ spec_public @*/ float prezzoTotale;
 
     /*@ public normal_behavior
-      @ ensures \result == ID;
+      @ ensures \result == id;
       @ pure
       @*/
     public int getID() {
-        return ID;
+        return id;
     }
 
     /*@ public normal_behavior
-      @ requires ID >= 0;
-      @ assignable this.ID;
-      @ ensures this.ID == ID;
+      @ requires id >= 0;
+      @ assignable this.id;
+      @ ensures this.id == id;
       @*/
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(int id) {
+        this.id = id;
     }
 
     /*@ public normal_behavior

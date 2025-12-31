@@ -4,53 +4,53 @@ public class MisuraBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
-    /*@ public invariant IDMaglietta >= 0;
+    /*@ public invariant idMaglietta >= 0;
       @ public invariant quantita >= 0;
       @ public invariant quantita > 0 ==> taglia != null;
       @ public invariant
       @   taglia != null ==> (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
       @     || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
     @*/
-    private /*@ spec_public @*/ int IDMaglietta;
+    private /*@ spec_public @*/ int idMaglietta;
     private /*@ spec_public @*/ int quantita;
     private /*@ spec_public nullable @*/ String taglia;
 
     /*@ public normal_behavior
-      @ ensures IDMaglietta == 0 && quantita == 0 && taglia == null;
+      @ ensures idMaglietta == 0 && quantita == 0 && taglia == null;
       @*/
     public MisuraBean() {}
 
     /*@ public normal_behavior
-      @ requires IDMaglietta >= 0;
+      @ requires idMaglietta >= 0;
       @ requires quantita >= 0;
       @ requires quantita > 0 ==> taglia != null;
       @ requires taglia != null ==> (taglia.equals("XS") || taglia.equals("S") || taglia.equals("M")
       @     || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
-      @ ensures this.IDMaglietta == IDMaglietta;
+      @ ensures this.idMaglietta == idMaglietta;
       @ ensures this.quantita == quantita;
       @ ensures this.taglia == taglia;
       @*/
-    public MisuraBean(int IDMaglietta, int quantita, /*@ nullable @*/ String taglia) {
-        this.IDMaglietta = IDMaglietta;
+    public MisuraBean(int idMaglietta, int quantita, /*@ nullable @*/ String taglia) {
+        this.idMaglietta = idMaglietta;
         this.quantita = quantita;
         this.taglia = taglia;
     }
 
     /*@ public normal_behavior
-      @ ensures \result == IDMaglietta;
+      @ ensures \result == idMaglietta;
       @ pure
       @*/
     public int getIDMaglietta() {
-        return IDMaglietta;
+        return idMaglietta;
     }
 
     /*@ public normal_behavior
-      @ requires IDMaglietta >= 0;
-      @ assignable this.IDMaglietta;
-      @ ensures this.IDMaglietta == IDMaglietta;
+      @ requires idMaglietta >= 0;
+      @ assignable this.idMaglietta;
+      @ ensures this.idMaglietta == idMaglietta;
       @*/
-    public void setIDMaglietta(int IDMaglietta) {
-        this.IDMaglietta = IDMaglietta;
+    public void setIDMaglietta(int idMaglietta) {
+        this.idMaglietta = idMaglietta;
     }
 
     /*@ public normal_behavior
@@ -96,7 +96,7 @@ public class MisuraBean {
     @Override
     public String toString() {
         return "MisuraBean{" +
-                "IDMaglietta=" + IDMaglietta +
+                "idMaglietta=" + idMaglietta +
                 ", quantita=" + quantita +
                 ", taglia='" + taglia + '\'' +
                 '}';

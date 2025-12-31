@@ -4,9 +4,9 @@ public class AcquistoBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
-    /*@ public invariant IDAcquisto  >= 0;
-      @ public invariant IDOrdine    >= 0;
-      @ public invariant IDMaglietta >= 0;
+    /*@ public invariant idAcquisto  >= 0;
+      @ public invariant idOrdine    >= 0;
+      @ public invariant idMaglietta >= 0;
 
       @ public invariant quantita >= 0;
 
@@ -24,9 +24,9 @@ public class AcquistoBean {
       @       || taglia.equals("L") || taglia.equals("XL") || taglia.equals("XXL"));
       @*/
 
-    private /*@ spec_public @*/ int IDAcquisto;
-    private /*@ spec_public @*/ int IDOrdine;
-    private /*@ spec_public @*/ int IDMaglietta;
+    private /*@ spec_public @*/ int idAcquisto;
+    private /*@ spec_public @*/ int idOrdine;
+    private /*@ spec_public @*/ int idMaglietta;
     private /*@ spec_public @*/ int quantita;
 
     private /*@ spec_public @*/ float prezzoAq;
@@ -36,54 +36,54 @@ public class AcquistoBean {
     private /*@ spec_public nullable @*/ String taglia;
 
     /*@ public normal_behavior
-      @ ensures \result == IDAcquisto;
+      @ ensures \result == idAcquisto;
       @ pure
       @*/
     public int getIDAcquisto() {
-        return IDAcquisto;
+        return idAcquisto;
     }
 
     /*@ public normal_behavior
-      @ requires IDAcquisto >= 0;
-      @ assignable this.IDAcquisto;
-      @ ensures this.IDAcquisto == IDAcquisto;
+      @ requires idAcquisto >= 0;
+      @ assignable this.idAcquisto;
+      @ ensures this.idAcquisto == idAcquisto;
       @*/
-    public void setIDAcquisto(int IDAcquisto) {
-        this.IDAcquisto = IDAcquisto;
+    public void setIDAcquisto(int idAcquisto) {
+        this.idAcquisto = idAcquisto;
     }
 
     /*@ public normal_behavior
-      @ ensures \result == IDOrdine;
+      @ ensures \result == idOrdine;
       @ pure
       @*/
     public int getIDOrdine() {
-        return IDOrdine;
+        return idOrdine;
     }
 
     /*@ public normal_behavior
-      @ requires IDOrdine >= 0;
-      @ assignable this.IDOrdine;
-      @ ensures this.IDOrdine == IDOrdine;
+      @ requires idOrdine >= 0;
+      @ assignable this.idOrdine;
+      @ ensures this.idOrdine == idOrdine;
       @*/
-    public void setIDOrdine(int IDOrdine) {
-        this.IDOrdine = IDOrdine;
+    public void setIDOrdine(int idOrdine) {
+        this.idOrdine = idOrdine;
     }
 
     /*@ public normal_behavior
-      @ ensures \result == IDMaglietta;
+      @ ensures \result == idMaglietta;
       @ pure
       @*/
     public int getIDMaglietta() {
-        return IDMaglietta;
+        return idMaglietta;
     }
 
     /*@ public normal_behavior
-      @ requires IDMaglietta >= 0;
-      @ assignable this.IDMaglietta;
-      @ ensures this.IDMaglietta == IDMaglietta;
+      @ requires idMaglietta >= 0;
+      @ assignable this.idMaglietta;
+      @ ensures this.idMaglietta == idMaglietta;
       @*/
-    public void setIDMaglietta(int IDMaglietta) {
-        this.IDMaglietta = IDMaglietta;
+    public void setIDMaglietta(int idMaglietta) {
+        this.idMaglietta = idMaglietta;
     }
 
     /*@ public normal_behavior
@@ -180,8 +180,8 @@ public class AcquistoBean {
     @Override
     public String toString() {
         return "AcquistoBean{" +
-                "IDOrdine=" + IDOrdine +
-                ", IDMaglietta=" + IDMaglietta +
+                "idOrdine=" + idOrdine +
+                ", idMaglietta=" + idMaglietta +
                 ", quantita=" + quantita +
                 ", immagine='" + immagine + '\'' +
                 ", prezzoAq=" + prezzoAq +

@@ -6,18 +6,18 @@ import java.util.Base64;
 
 public class CryptoKeyProvider {
 
-  private static SecretKey KEY;
+  private static SecretKey key;
 
   public static SecretKey getKey() {
-    if (KEY == null) {
+    if (key == null) {
       String base64 = System.getenv("AES_KEY_BASE64");
       if (base64 == null) {
         throw new IllegalStateException("AES_KEY_BASE64 environment variable not set");
       }
       byte[] decoded = Base64.getDecoder().decode(base64);
-      KEY = new SecretKeySpec(decoded, "AES");
+      key = new SecretKeySpec(decoded, "AES");
     }
-    return KEY;
+    return key;
   }
 }
 
