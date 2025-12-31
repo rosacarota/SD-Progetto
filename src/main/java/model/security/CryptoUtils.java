@@ -3,6 +3,7 @@ package model.security;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -12,7 +13,7 @@ public class CryptoUtils {
     private static final int IV_LENGTH = 12;
     private static final int TAG_LENGTH = 128;
 
-    public static String encrypt(SecretKey key, String plaintext) throws Exception {
+    public static String encrypt(SecretKey key, String plaintext) throws GeneralSecurityException {
         byte[] iv = new byte[IV_LENGTH];
         random.nextBytes(iv);
 
@@ -28,7 +29,7 @@ public class CryptoUtils {
         return Base64.getEncoder().encodeToString(result);
     }
 
-    public static String decrypt(SecretKey key, String encoded) throws Exception {
+    public static String decrypt(SecretKey key, String encoded) throws GeneralSecurityException {
         byte[] input = Base64.getDecoder().decode(encoded);
 
         byte[] iv = new byte[IV_LENGTH];

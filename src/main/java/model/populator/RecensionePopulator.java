@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class RecensionePopulator {
 
@@ -13,7 +14,7 @@ public class RecensionePopulator {
         this.ds = ds;
     }
 
-    public void populate() throws Exception {
+    public void populate() throws SQLException {
         if (!isEmpty()) return;
 
         String q = "INSERT INTO Recensione (ID, IDMaglietta, username, contenuto) VALUES (?, ?, ?, ?)";
@@ -34,7 +35,7 @@ public class RecensionePopulator {
         }
     }
 
-    private boolean isEmpty() throws Exception {
+    private boolean isEmpty() throws SQLException {
         String q = "SELECT COUNT(*) FROM Recensione";
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(q);

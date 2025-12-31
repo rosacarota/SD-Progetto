@@ -24,7 +24,7 @@ public class DBConnection {
             Context env = (Context) init.lookup("java:comp/env");
             return (DataSource) env.lookup("jdbc/whiTee");
         } catch (NamingException e) {
-            throw new RuntimeException("Cannot initialize DataSource", e);
+            throw new ExceptionInInitializerError("Failed to initialize DataSource: " + e.getMessage());
         }
     }
 }

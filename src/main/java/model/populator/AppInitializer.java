@@ -24,7 +24,7 @@ public class AppInitializer implements ServletContextListener {
             new AcquistoPopulator(ds).populate();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ExceptionInInitializerError("Failed to initialize DataSource: " + e.getMessage());
         }
     }
 

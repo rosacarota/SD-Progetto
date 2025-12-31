@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MisuraPopulator implements TablePopulator {
 
@@ -14,7 +15,7 @@ public class MisuraPopulator implements TablePopulator {
     }
 
     @Override
-    public void populate() throws Exception {
+    public void populate() throws SQLException {
         if (!isEmpty()) return;
 
         String q = "INSERT INTO Misura(IDMaglietta, taglia, quantita) VALUES (?, ?, ?)";
@@ -30,7 +31,7 @@ public class MisuraPopulator implements TablePopulator {
         }
     }
 
-    private boolean isEmpty() throws Exception {
+    private boolean isEmpty() throws SQLException {
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM Misura");
              ResultSet rs = ps.executeQuery()) {

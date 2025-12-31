@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class OrdinePopulator {
@@ -14,7 +15,7 @@ public class OrdinePopulator {
         this.ds = ds;
     }
 
-    public void populate() throws Exception {
+    public void populate() throws SQLException {
         if (!isEmpty()) return;
 
         String q = "INSERT INTO Ordine (ID, username, prezzoTotale, dataConsegna, dataOrdine, nomeConsegna, cognomeConsegna, cap, via, citta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -40,7 +41,7 @@ public class OrdinePopulator {
         }
     }
 
-    private boolean isEmpty() throws Exception {
+    private boolean isEmpty() throws SQLException {
         String q = "SELECT COUNT(*) FROM Ordine";
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(q);

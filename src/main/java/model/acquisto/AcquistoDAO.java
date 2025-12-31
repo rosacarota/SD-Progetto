@@ -59,7 +59,7 @@ public class AcquistoDAO implements DAOInterface<AcquistoBean, Integer> {
 
     @Override
     public Collection<AcquistoBean> doRetriveAll(String order) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

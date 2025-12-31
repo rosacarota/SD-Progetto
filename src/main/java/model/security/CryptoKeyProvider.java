@@ -12,7 +12,7 @@ public class CryptoKeyProvider {
     if (KEY == null) {
       String base64 = System.getenv("AES_KEY_BASE64");
       if (base64 == null) {
-        throw new RuntimeException("AES_KEY_BASE64 environment variable not set");
+        throw new IllegalStateException("AES_KEY_BASE64 environment variable not set");
       }
       byte[] decoded = Base64.getDecoder().decode(base64);
       KEY = new SecretKeySpec(decoded, "AES");
