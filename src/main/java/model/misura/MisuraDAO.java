@@ -62,15 +62,15 @@ public class MisuraDAO {
         }
     }
 
-    public Collection<MisuraBean> doRetrieveAll(int IDMaglietta) throws SQLException {
+    public Collection<MisuraBean> doRetrieveAll(int idMaglietta) throws SQLException {
         Collection<MisuraBean> misure = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE IDMaglietta = ?";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE idMaglietta = ?";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, IDMaglietta);
+            preparedStatement.setInt(1, idMaglietta);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {

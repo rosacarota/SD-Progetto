@@ -4,8 +4,8 @@ public class MagliettaBean {
     // NOTE: String fields are marked @nullable because this bean can be created/filled incrementally in Java
     // (defaults to null), while DB NOT NULL constraints are enforced at persistence/DAO level.
 
-    /*@ public invariant ID >= 0;
-      @ public invariant 0 <= IVA && IVA <= 100;
+    /*@ public invariant id >= 0;
+      @ public invariant 0 <= iva && iva <= 100;
       @ public invariant prezzo >= 0.0f;
 
       @ public invariant nome == null || (nome.length() > 0 && nome.length() <= 50);
@@ -15,8 +15,8 @@ public class MagliettaBean {
       @ public invariant descrizione == null || (descrizione.length() > 0 && descrizione.length() <= 150);
       @*/
 
-    private /*@ spec_public @*/ int ID;
-    private /*@ spec_public @*/ int IVA;
+    private /*@ spec_public @*/ int id;
+    private /*@ spec_public @*/ int iva;
 
     private /*@ spec_public nullable @*/ String nome;
     private /*@ spec_public nullable @*/ String colore;
@@ -27,37 +27,37 @@ public class MagliettaBean {
     private /*@ spec_public @*/ float prezzo;
 
     /*@ public normal_behavior
-      @ ensures \result == ID;
+      @ ensures \result == id;
       @ pure
       @*/
     public int getID() {
-        return ID;
+        return id;
     }
 
     /*@ public normal_behavior
-      @ requires ID >= 0;
-      @ assignable this.ID;
-      @ ensures this.ID == ID;
+      @ requires id >= 0;
+      @ assignable this.id;
+      @ ensures this.id == id;
       @*/
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(int id) {
+        this.id = id;
     }
 
     /*@ public normal_behavior
-      @ ensures \result == IVA;
+      @ ensures \result == iva;
       @ pure
       @*/
     public int getIVA() {
-        return IVA;
+        return iva;
     }
 
     /*@ public normal_behavior
-      @ requires 0 <= IVA && IVA <= 100;
-      @ assignable this.IVA;
-      @ ensures this.IVA == IVA;
+      @ requires 0 <= iva && iva <= 100;
+      @ assignable this.iva;
+      @ ensures this.iva == iva;
       @*/
-    public void setIVA(int IVA) {
-        this.IVA = IVA;
+    public void setIVA(int iva) {
+        this.iva = iva;
     }
 
     /*@ public normal_behavior
@@ -167,8 +167,8 @@ public class MagliettaBean {
     @Override
     public String toString() {
         return "MagliettaBean{" +
-                "ID=" + ID +
-                ", IVA=" + IVA +
+                "id=" + id +
+                ", iva=" + iva +
                 ", nome='" + nome + '\'' +
                 ", colore='" + colore + '\'' +
                 ", tipo='" + tipo + '\'' +
