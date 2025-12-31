@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class UtentePopulator implements TablePopulator {
     }
 
     @Override
-    public void populate() throws Exception {
+    public void populate() throws SQLException {
         if (!isEmpty()) {
             return;
         }
@@ -31,7 +32,7 @@ public class UtentePopulator implements TablePopulator {
         }
     }
 
-    private boolean isEmpty() throws Exception {
+    private boolean isEmpty() throws SQLException {
         String query = "SELECT COUNT(*) FROM Utente";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

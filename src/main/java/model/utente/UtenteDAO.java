@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.crypto.SecretKey;
 import javax.sql.DataSource;
+import java.security.GeneralSecurityException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -186,11 +187,11 @@ public class UtenteDAO implements DAOInterface<UtenteBean, String> {
         u.setTipo(rs.getString("tipo"));
     }
 
-    private String encryptOrNull(SecretKey key, String v) throws Exception {
+    private String encryptOrNull(SecretKey key, String v) throws GeneralSecurityException {
         return (v == null || v.isEmpty()) ? null : CryptoUtils.encrypt(key, v);
     }
 
-    private String decryptOrNull(SecretKey key, String v) throws Exception {
+    private String decryptOrNull(SecretKey key, String v) throws GeneralSecurityException {
         return (v == null) ? null : CryptoUtils.decrypt(key, v);
     }
 }

@@ -14,7 +14,7 @@ public class AcquistoPopulator {
         this.ds = ds;
     }
 
-    public void populate() throws Exception {
+    public void populate() throws SQLException {
         if (!isEmpty()) return;
 
         String q = "INSERT INTO Acquisto (IDOrdine, IDMaglietta, quantita, immagine, prezzoAq, ivaAq, taglia) VALUES (?, ?, ?, ?, ?, ?, ?)";
