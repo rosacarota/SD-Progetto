@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class SearchBarTest {
+class SearchBarTest {
 
     private SearchBar servlet;
     private DataSource dsMock;

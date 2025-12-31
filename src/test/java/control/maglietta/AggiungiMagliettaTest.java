@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.*;
 
-public class AggiungiMagliettaTest {
+class AggiungiMagliettaTest {
 
     private AggiungiMaglietta servlet;
     private HttpServletRequest req;

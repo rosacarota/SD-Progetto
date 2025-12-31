@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
 
-public class DeleteMagliettaTest {
+class DeleteMagliettaTest {
 
     private DeleteMaglietta servlet;
     private HttpServletRequest req;

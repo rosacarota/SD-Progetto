@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class ModificaMagliettaTest {
+class ModificaMagliettaTest {
 
     private ModificaMaglietta servlet;
     private HttpServletRequest req;

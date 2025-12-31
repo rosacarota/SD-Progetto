@@ -12,7 +12,7 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class OrdineDAOTest {
+class OrdineDAOTest {
 
     private OrdineDAO dao;
     private DataSource dsMock;

@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CarrelloModelTest {
+class CarrelloModelTest {
     private CarrelloModel carrello;
     private MagliettaDAO daoMock;
 

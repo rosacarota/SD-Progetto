@@ -11,7 +11,7 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class MagliettaDAOTest {
+class MagliettaDAOTest {
     private MagliettaDAO dao;
     private DataSource dsMock;
     private Connection connMock;

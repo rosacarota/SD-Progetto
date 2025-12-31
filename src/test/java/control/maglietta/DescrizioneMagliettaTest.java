@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
 
-public class DescrizioneMagliettaTest {
+class DescrizioneMagliettaTest {
 
     private DescrizioneMaglietta servlet;
     private HttpServletRequest req;

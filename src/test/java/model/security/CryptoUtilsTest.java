@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CryptoUtilsTest {
+class CryptoUtilsTest {
     private SecretKey randomAESKey() throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128, SecureRandom.getInstanceStrong());

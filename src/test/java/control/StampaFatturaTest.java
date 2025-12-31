@@ -25,7 +25,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-public class StampaFatturaTest {
+class StampaFatturaTest {
 
     private StampaFattura servlet;
     private HttpServletRequest req;

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.*;
 
-public class RimuoviMagliettaTest {
+class RimuoviMagliettaTest {
 
     private RimuoviMaglietta servlet;
     private HttpServletRequest req;
