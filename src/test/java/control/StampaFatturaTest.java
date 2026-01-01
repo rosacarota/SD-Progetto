@@ -65,16 +65,21 @@ class StampaFatturaTest {
 
         OrdineBean ordine = mock(OrdineBean.class);
         when(ordine.getID()).thenReturn(1);
-        when(ordine.getPrezzoTotale()).thenReturn(10f);
+        when(ordine.getPrezzoTotale()).thenReturn(31f);
         when(ordine.getDataOrdine()).thenReturn(LocalDate.now());
 
-        AcquistoBean acquisto = mock(AcquistoBean.class);
-        when(acquisto.getIDMaglietta()).thenReturn(1);
-        when(acquisto.getQuantita()).thenReturn(1);
-        when(acquisto.getPrezzoAq()).thenReturn(10f);
+        AcquistoBean acquisto1 = mock(AcquistoBean.class);
+        when(acquisto1.getIDMaglietta()).thenReturn(1);
+        when(acquisto1.getQuantita()).thenReturn(2);
+        when(acquisto1.getPrezzoAq()).thenReturn(5f);
+
+        AcquistoBean acquisto2 = mock(AcquistoBean.class);
+        when(acquisto2.getIDMaglietta()).thenReturn(2);
+        when(acquisto2.getQuantita()).thenReturn(3);
+        when(acquisto2.getPrezzoAq()).thenReturn(7f);
 
         Map<OrdineBean, Collection<AcquistoBean>> ordini = new HashMap<>();
-        ordini.put(ordine, List.of(acquisto));
+        ordini.put(ordine, List.of(acquisto1, acquisto2));
 
         when(session.getAttribute("utente")).thenReturn(utente);
         when(session.getAttribute("ordini")).thenReturn(ordini);
@@ -96,6 +101,12 @@ class StampaFatturaTest {
             servlet.doPost(req, resp);
 
             PDPageContentStream cs = createdStreams.get(0);
+
+            verify(cs).newLineAtOffset(515.6068f, 448.0316f);
+            verify(cs).showText("10.0 euro");
+
+            verify(cs).newLineAtOffset(515.6068f, 433.0316f);
+            verify(cs).showText("21.0 euro");
 
             verify(cs).close();
             verify(documentMock).close();
@@ -193,7 +204,10 @@ class StampaFatturaTest {
                 MockedStatic<PDDocument> mockedStatic = mockStatic(PDDocument.class);
                 MockedConstruction<PDPageContentStream> mockedStream =
                         mockConstruction(PDPageContentStream.class,
-                                (cs, ctx) -> createdStreams.add(cs))
+                                (cs, ctx) -> {
+                                    createdStreams.add(cs);
+                                    doNothing().when(cs).close();
+                                })
         ) {
             mockedStatic.when(() -> PDDocument.load(any(File.class)))
                     .thenReturn(documentMock);
@@ -201,7 +215,7 @@ class StampaFatturaTest {
             servlet.doPost(req, resp);
 
             PDPageContentStream cs = createdStreams.get(0);
-            verify(cs, atLeastOnce()).close();
+            verify(cs, times(2)).close();
             verify(documentMock, atLeastOnce()).close();
             verify(dispatcher).forward(req, resp);
             verify(resp, never()).sendRedirect(anyString());
@@ -258,7 +272,7 @@ class StampaFatturaTest {
             servlet.doPost(req, resp);
 
             PDPageContentStream cs = createdStreams.get(0);
-            verify(cs, atLeastOnce()).close();
+            verify(cs, times(2)).close();
             verify(dispatcher).forward(req, resp);
         }
     }
@@ -303,7 +317,10 @@ class StampaFatturaTest {
                 MockedStatic<PDDocument> mockedStatic = mockStatic(PDDocument.class);
                 MockedConstruction<PDPageContentStream> mockedStream =
                         mockConstruction(PDPageContentStream.class,
-                                (cs, ctx) -> createdStreams.add(cs))
+                                (cs, ctx) -> {
+                                    createdStreams.add(cs);
+                                    doNothing().when(cs).close();
+                                })
         ) {
             mockedStatic.when(() -> PDDocument.load(any(File.class)))
                     .thenReturn(documentMock);
@@ -311,7 +328,7 @@ class StampaFatturaTest {
             servlet.doPost(req, resp);
 
             PDPageContentStream cs = createdStreams.get(0);
-            verify(cs, atLeastOnce()).close();
+            verify(cs, times(2)).close();
             verify(documentMock, atLeastOnce()).close();
             verify(dispatcher).forward(req, resp);
         }
