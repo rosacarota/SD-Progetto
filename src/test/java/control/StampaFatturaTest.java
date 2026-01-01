@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -96,6 +95,13 @@ class StampaFatturaTest {
 
             servlet.doPost(req, resp);
 
+            PDPageContentStream cs = createdStreams.get(0);
+
+            verify(cs).close();
+            verify(documentMock).close();
+            verify(resp).setContentType("application/pdf");
+            verify(resp).setCharacterEncoding("UTF-8");
+            verify(resp).setHeader("Content-Disposition", "attachment; filename=output.pdf");
             verify(resp).sendRedirect("pdf/output.pdf");
             verify(dispatcher, never()).forward(req, resp);
         }
@@ -181,17 +187,22 @@ class StampaFatturaTest {
         doThrow(new IOException("save failed"))
                 .when(documentMock).save(any(File.class));
 
+        List<PDPageContentStream> createdStreams = new ArrayList<>();
+
         try (
                 MockedStatic<PDDocument> mockedStatic = mockStatic(PDDocument.class);
                 MockedConstruction<PDPageContentStream> mockedStream =
-                        mockConstruction(PDPageContentStream.class)
+                        mockConstruction(PDPageContentStream.class,
+                                (cs, ctx) -> createdStreams.add(cs))
         ) {
             mockedStatic.when(() -> PDDocument.load(any(File.class)))
                     .thenReturn(documentMock);
 
             servlet.doPost(req, resp);
 
-            verify(documentMock).close();
+            PDPageContentStream cs = createdStreams.get(0);
+            verify(cs, atLeastOnce()).close();
+            verify(documentMock, atLeastOnce()).close();
             verify(dispatcher).forward(req, resp);
             verify(resp, never()).sendRedirect(anyString());
         }
@@ -230,17 +241,24 @@ class StampaFatturaTest {
         when(documentMock.getPage(0)).thenReturn(mock(PDPage.class));
         doThrow(new IOException("save failed")).when(documentMock).save(any(File.class));
 
+        List<PDPageContentStream> createdStreams = new ArrayList<>();
+
         try (
                 MockedStatic<PDDocument> mockedStatic = mockStatic(PDDocument.class);
                 MockedConstruction<PDPageContentStream> mockedStream =
                         mockConstruction(PDPageContentStream.class,
-                                (cs, ctx) -> doThrow(new IOException("close fail")).when(cs).close())
+                                (cs, ctx) -> {
+                                    createdStreams.add(cs);
+                                    doThrow(new IOException("close fail")).when(cs).close();
+                                })
         ) {
             mockedStatic.when(() -> PDDocument.load(any(File.class)))
                     .thenReturn(documentMock);
 
             servlet.doPost(req, resp);
 
+            PDPageContentStream cs = createdStreams.get(0);
+            verify(cs, atLeastOnce()).close();
             verify(dispatcher).forward(req, resp);
         }
     }
@@ -279,16 +297,22 @@ class StampaFatturaTest {
         doThrow(new IOException("save failed")).when(documentMock).save(any(File.class));
         doThrow(new IOException("close doc fail")).when(documentMock).close();
 
+        List<PDPageContentStream> createdStreams = new ArrayList<>();
+
         try (
                 MockedStatic<PDDocument> mockedStatic = mockStatic(PDDocument.class);
                 MockedConstruction<PDPageContentStream> mockedStream =
-                        mockConstruction(PDPageContentStream.class)
+                        mockConstruction(PDPageContentStream.class,
+                                (cs, ctx) -> createdStreams.add(cs))
         ) {
             mockedStatic.when(() -> PDDocument.load(any(File.class)))
                     .thenReturn(documentMock);
 
             servlet.doPost(req, resp);
 
+            PDPageContentStream cs = createdStreams.get(0);
+            verify(cs, atLeastOnce()).close();
+            verify(documentMock, atLeastOnce()).close();
             verify(dispatcher).forward(req, resp);
         }
     }
