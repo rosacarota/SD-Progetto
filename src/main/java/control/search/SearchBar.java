@@ -64,14 +64,14 @@ public class SearchBar extends HttpServlet {
 
             writeJsonResponse(resp, lista);
 
-        } catch (SQLException | ServletException | IOException e) {
+        } catch (SQLException | IOException e) {
             req.getRequestDispatcher(ERROR_PAGE).forward(req, resp);
         }
 
     }
 
     private void writeJsonResponse(HttpServletResponse resp,
-                                   String json) throws ServletException, IOException {
+                                   String json) throws IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write(json);
