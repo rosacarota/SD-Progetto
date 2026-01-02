@@ -92,17 +92,17 @@
 		</div>
 
 		<div id="main">
-			<span id="open"
-				role="button"
-				tabindex="0"
-				style="font-size:30px;cursor:pointer"
+			<button
+				type="button"
+				id="open"
+				class="openbtn"
 				aria-label="Apri menu"
-				aria-controls="sidenav"
+				aria-controls="mySidenav"
 				aria-expanded="false"
 				onclick="openNav()"
-				onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); openNav(); }">
+				style="font-size:30px;cursor:pointer;background:transparent;border:0;padding:0;">
 			&#9776;
-			</span>		
+			</button>
 		</div>
 
 		<script>
@@ -110,12 +110,14 @@
 				document.getElementById("mySidenav").style.width = "250px";
 				document.getElementById("main").style.marginRight = "250px";
 				document.getElementById("open").style.display = "none";
+				document.getElementById("open").setAttribute("aria-expanded", "true");
 			}
 
 			function closeNav() {
 				document.getElementById("mySidenav").style.width = "0";
 				document.getElementById("main").style.marginRight = "0";
 				document.getElementById("open").style.display = "block";
+				document.getElementById("open").setAttribute("aria-expanded", "false");
 			}
 		</script>
 	</div>

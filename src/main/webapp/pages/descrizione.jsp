@@ -20,11 +20,10 @@
 <%
 	DecimalFormat df = new DecimalFormat("#.##");
 	df.setRoundingMode(RoundingMode.FLOOR);
-	
+
 	String prezzo = df.format(magliettaBean.getPrezzo());
 	if (prezzo.matches("[0-9]+"))
 		prezzo += ".00";
-
 %>
 
 <table class="mostraProdotto">
@@ -35,14 +34,15 @@
 	</tr>
 	<tr>
 		<td class="Prodotto">
-			<div class="img-zoom-container"
-				role="button"
-				tabindex="0"
+			<button
+				type="button"
+				class="img-zoom-container"
 				aria-label="Apri immagine ingrandita"
 				aria-haspopup="dialog"
 				aria-controls="myModal"
 				onclick="Modal();"
-				onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); Modal(); }">
+				style="background: transparent; border: 0; padding: 0; margin: 0; text-align: inherit; color: inherit;"
+			>
 				<img id="myimage" src="<%= magliettaBean.getGrafica() %>" alt="<%= magliettaBean.getNome() %>" class="mgt">
 			  	<div id="myresult" class="img-zoom-result"></div><br><br><br><br>
 			  	<div id="myModal" class="modal">
@@ -53,7 +53,7 @@
 				<script>
 					document.getElementById("myModal").style.visibility = "hidden";
 				</script>
-			</div>
+			</button>
 		</td>
 		<td class="Descrizione">
 			<br>
@@ -65,7 +65,6 @@
 			<p><%= magliettaBean.getTipo() %><br></p>
 			<p><%= magliettaBean.getDescrizione() %><br></p>
 			<p>Colore: <%= magliettaBean.getColore() %></p><br>
-
 
 			<form action="${pageContext.request.contextPath}/AggiungiMaglietta" method="post">
 				<div class="taglie">
@@ -79,21 +78,20 @@
 					</select></label>
 				</div>
 				<br><br>
-				  <label>
-					    <input type="hidden" name="ID" value="<%= magliettaBean.getID() %>">
-					    <button class="btn-shine button" type="submit">
-    						<span>Aggiungi al carrello</span>
-							<script src="https://cdn.lordicon.com/bhenfmcm.js" integrity="sha384-VY539ll5TIagHE4WlmKaJKJ4gKxfKtGxK0MgVqVuFG4RXvATOK4KWfapoPR/PE9K" crossorigin="anonymous"></script>
-							<lord-icon src="https://cdn.lordicon.com/dnoiydox.json" trigger="hover" colors="primary:#1663c7,secondary:#f24c00" stroke="85"></lord-icon>
-						</button>
-				  </label>
+				<label>
+					<input type="hidden" name="ID" value="<%= magliettaBean.getID() %>">
+					<button class="btn-shine button" type="submit">
+						<span>Aggiungi al carrello</span>
+						<script src="https://cdn.lordicon.com/bhenfmcm.js" integrity="sha384-VY539ll5TIagHE4WlmKaJKJ4gKxfKtGxK0MgVqVuFG4RXvATOK4KWfapoPR/PE9K" crossorigin="anonymous"></script>
+						<lord-icon src="https://cdn.lordicon.com/dnoiydox.json" trigger="hover" colors="primary:#1663c7,secondary:#f24c00" stroke="85"></lord-icon>
+					</button>
+				</label>
 			</form>
 		</td>
 	</tr>
 </table>
 
 <script>
-// Initiate zoom effect:
 document.getElementById("myresult").style.visibility = "hidden";
 imageZoom("myimage", "myresult");
 </script>
