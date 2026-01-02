@@ -144,20 +144,21 @@ public class UtenteDAO implements DAOInterface<UtenteBean, String> {
     }
 
     private UtenteBean getUtenteBean(String code, UtenteBean user, String query) throws SQLException {
+        boolean found;
+
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(query)) {
 
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.isBeforeFirst())
-                return null;
-
-            rs.next();
-            setUtente(rs, user);
+            found = rs.isBeforeFirst();
+            if (found) {
+                rs.next();
+                setUtente(rs, user);
+            }
         }
-
-        return user;
+        return found ? user : null;
     }
 
     private void setUtente(ResultSet rs, UtenteBean u) throws SQLException {
