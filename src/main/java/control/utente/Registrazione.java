@@ -22,7 +22,13 @@ public class Registrazione extends HttpServlet {
         String cognome = req.getParameter("cognomeReg");
         String email = req.getParameter("emailReg");
         String tipo = req.getParameter("tipo");
-        LocalDate dataNascita = LocalDate.parse(req.getParameter("dataNascitaReg"));
+        LocalDate dataNascita;
+        try {
+            dataNascita = LocalDate.parse(req.getParameter("dataNascitaReg"));
+        } catch (Exception ex) {
+            req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            return;
+        }
 
         UtenteDAO utenteDAO = new UtenteDAO();
 
@@ -45,6 +51,7 @@ public class Registrazione extends HttpServlet {
             }
         } catch (SQLException e) {
             req.getRequestDispatcher("/pages/errorpage.jsp").forward(req, resp);
+            return;
         }
 
         resp.sendRedirect("pages/login.jsp");
