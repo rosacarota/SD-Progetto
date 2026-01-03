@@ -23,7 +23,6 @@ out/
 Thumbs.db
 
 # === Logs and temp files ===
-*.log
 *.tmp
 
 # === Maven ===

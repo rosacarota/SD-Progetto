@@ -1,0 +1,19 @@
+
+System Metadata
+-------------------------
+CPU Model:      13th Gen Intel(R) Core(TM) i7-13620H
+CPU Cores:      16
+Total Memory:   7.6Gi
+OS:             Linux MSI 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+Java Version:   openjdk version "21.0.9" 2025-10-21
+
+JMH Benchmark Metadata
+-------------------------
+Benchmark class: model.security.CryptoUtilsBenchmark
+Output folder:   jmh/report/model.security.CryptoUtilsBenchmark
+JMH JAR:         /mnt/c/Users/lucac/Documents/GitHub/SD-Progetto/target/benchmarks.jar
+Exploded dir:    /mnt/c/Users/lucac/Documents/GitHub/SD-Progetto/target/benchmarks_exploded
+Start time:      2026-01-03 15:38:24
+End time:        2026-01-03 15:43:22
+Results file:    jmh/report/model.security.CryptoUtilsBenchmark/results.json
+Log file:        jmh/report/model.security.CryptoUtilsBenchmark/jmh.log
