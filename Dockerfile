@@ -2,6 +2,11 @@
 FROM maven:3.9.11-eclipse-temurin-11 AS build
 WORKDIR /app
 
+# Update package lists and upgrade installed packages
+RUN apt-get update \
+ && apt-get -y upgrade \
+ && rm -rf /var/lib/apt/lists/*
+
 # Copy project files
 COPY pom.xml .
 COPY src ./src
@@ -11,6 +16,11 @@ RUN mvn clean package -DskipTests
 
 # === Runtime stage: lightweight Tomcat container ===
 FROM tomcat:9.0.112-jdk11
+
+# Update package lists and upgrade installed packages
+RUN apt-get update \
+ && apt-get -y upgrade \
+ && rm -rf /var/lib/apt/lists/*
 
 # Remove default Tomcat applications
 RUN rm -rf /usr/local/tomcat/webapps/*
