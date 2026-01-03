@@ -20,6 +20,7 @@
 		<div class="menu-container">
 		<button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/Catalogo'; return false;">Catalogo</button>
 		<button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/pages/personalizzata.jsp'; return false;">Personalizza</button>
+		<button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/pages/carrello.jsp'; return false;">Carrello</button>
 		</div>
 		<div class="right-container">
 			
@@ -89,6 +90,7 @@
 
 			<a href="${pageContext.request.contextPath}/Catalogo">Catalogo</a>
 			<a href="${pageContext.request.contextPath}/pages/personalizzata.jsp">Personalizza</a>
+			<a href="${pageContext.request.contextPath}/pages/carrello.jsp">Carrello</a>
 		</div>
 
 		<div id="main">
