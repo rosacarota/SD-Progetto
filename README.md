@@ -172,9 +172,11 @@ Triggered on every push or pull request to `main`, this workflow performs:
 * **Coverage & Mutation Reporting:** generation of JaCoCo and PiTest HTML reports
 * **GitHub Pages Publishing:** automatic publication of generated reports
 * **Codecov Integration:** upload of coverage data and test results to Codecov
-* **SonarQube Cloud Analysis:** static analysis of code quality and security, executed in a separate job after a successful build and test phase.
 * **Test Summary:** human-readable JUnit report via dorny/test-reporter
-* **Artifacts:** the compiled application artifact is uploaded as a downloadable file. The same applies to the GitHub Pages reports
+* **Artifacts:** upload of compiled classes, JaCoCo report, GitHub Pages reports and the final WAR artifact
+
+After the build and test phase, a dedicated job performs:
+* **SonarQube Cloud Analysis:** static analysis of code quality and security, using coverage data produced by the build and executed in a separate job after a successful build and test phase.
 
 📄 **Public Reports (GitHub Pages):**
 
